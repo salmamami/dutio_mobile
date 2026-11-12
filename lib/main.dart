@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'core/app_theme.dart';
 import 'screens/home_screen.dart';
 import 'screens/mission_screen.dart';
+import 'screens/camera_screen.dart';
 
 void main() {
   runApp(const DutioApp());
@@ -17,7 +18,11 @@ class DutioApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dutio',
       theme: AppTheme.lightTheme,
-      home: const MissionScreen(),
+      home: const HomeScreen(),
+      routes: {
+        '/mission': (context) => const MissionScreen(),
+        '/camera': (context) => const CameraScreen(),
+      },
     );
   }
 }
