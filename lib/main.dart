@@ -8,6 +8,7 @@ import 'screens/photo_preview_screen.dart';
 import 'screens/gallery_screen.dart';
 import 'screens/upload_success_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/crew_points_screen.dart';
 
 void main() {
   runApp(const DutioApp());
@@ -30,6 +31,7 @@ class DutioApp extends StatelessWidget {
         '/gallery': (context) => const GalleryScreen(),
         '/upload-success': (context) => const UploadSuccessScreen(),
         '/profile': (context) => const ProfileScreen(),
+        '/crew-points': (context) => const CrewPointsScreen(),
       },
     );
   }
