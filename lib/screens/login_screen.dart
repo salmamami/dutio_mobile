@@ -42,7 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
           Text(
             role == DutioRole.member ? 'Crew, Let’s Move!' : 'Captain on Deck!',
             style: TextStyle(
-              color: AppTheme.darkGreen,
+              color: DutioPalette.of(context).accent,
               fontSize: 29,
               fontWeight: FontWeight.w900,
             ),
@@ -52,7 +52,10 @@ class _LoginScreenState extends State<LoginScreen> {
             role == DutioRole.member
                 ? 'Piket hari ini dimulai dari sini 🚀'
                 : 'Jalankan kendali, buat semuanya teratur ⚙️',
-            style: const TextStyle(color: AppTheme.dark, fontSize: 16),
+            style: TextStyle(
+              color: DutioPalette.of(context).textPrimary,
+              fontSize: 16,
+            ),
           ),
           const SizedBox(height: 130),
           Container(
@@ -61,18 +64,18 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
             decoration: BoxDecoration(
-              color: AppTheme.sage,
+              color: DutioPalette.of(context).sage,
               borderRadius: BorderRadius.circular(38),
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text(
+                Text(
                   'Login',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: AppTheme.ink,
+                    color: DutioPalette.of(context).textStrong,
                     fontSize: 39,
                     fontWeight: FontWeight.w400,
                   ),
@@ -94,11 +97,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.resolveWith(
                       (states) => states.contains(WidgetState.selected)
-                          ? AppTheme.cream
-                          : AppTheme.sage,
+                          ? DutioPalette.of(context).background
+                          : DutioPalette.of(context).sage,
                     ),
                     foregroundColor: WidgetStateProperty.all(
-                      AppTheme.darkGreen,
+                      DutioPalette.of(context).accent,
                     ),
                   ),
                 ),
@@ -132,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 FilledButton(
                   onPressed: signIn,
                   style: FilledButton.styleFrom(
-                    backgroundColor: AppTheme.ink,
+                    backgroundColor: DutioPalette.of(context).strongAction,
                     foregroundColor: AppTheme.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: const StadiumBorder(),
@@ -172,7 +175,7 @@ class _LoginScreenState extends State<LoginScreen> {
       hintText: hint,
       hintStyle: TextStyle(color: AppTheme.white.withValues(alpha: .75)),
       suffixIcon: suffix,
-      fillColor: AppTheme.charcoal.withValues(alpha: .65),
+      fillColor: DutioPalette.of(context).mutedSurface.withValues(alpha: .65),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
     ),
   );

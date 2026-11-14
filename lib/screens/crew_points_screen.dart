@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
 class CrewPointsScreen extends StatelessWidget {
@@ -16,19 +16,19 @@ class CrewPointsScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Crew Points',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.dark,
+                  color: DutioPalette.of(context).textPrimary,
                 ),
               ),
               const SizedBox(height: 6),
@@ -43,7 +43,7 @@ class CrewPointsScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  color: AppTheme.sage,
+                  color: DutioPalette.of(context).sage,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
@@ -51,15 +51,15 @@ class CrewPointsScreen extends StatelessWidget {
                   children: [
                     const Row(
                       children: [
-                        Icon(Icons.stars_rounded,
-                            color: Colors.white, size: 24),
+                        Icon(
+                          Icons.stars_rounded,
+                          color: Colors.white,
+                          size: 24,
+                        ),
                         SizedBox(width: 8),
                         Text(
                           'Your Total Points',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                          ),
+                          style: TextStyle(color: Colors.white, fontSize: 14),
                         ),
                       ],
                     ),
@@ -86,12 +86,12 @@ class CrewPointsScreen extends StatelessWidget {
 
               const SizedBox(height: 26),
 
-              const Text(
+              Text(
                 'Leaderboard',
                 style: TextStyle(
                   fontSize: 19,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.dark,
+                  color: DutioPalette.of(context).textPrimary,
                 ),
               ),
               const SizedBox(height: 6),
@@ -111,7 +111,7 @@ class CrewPointsScreen extends StatelessWidget {
                     vertical: 15,
                   ),
                   decoration: BoxDecoration(
-                    color: AppTheme.white,
+                    color: DutioPalette.of(context).surface,
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Row(
@@ -123,14 +123,14 @@ class CrewPointsScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: index == 0
                               ? const Color(0xFFFFE7A3)
-                              : AppTheme.lightGreen,
+                              : DutioPalette.of(context).surfaceVariant,
                           shape: BoxShape.circle,
                         ),
                         child: Text(
                           '${index + 1}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.dark,
+                            color: DutioPalette.of(context).textPrimary,
                           ),
                         ),
                       ),
@@ -138,13 +138,13 @@ class CrewPointsScreen extends StatelessWidget {
                       Container(
                         width: 42,
                         height: 42,
-                        decoration: const BoxDecoration(
-                          color: AppTheme.lightGreen,
+                        decoration: BoxDecoration(
+                          color: DutioPalette.of(context).surfaceVariant,
                           shape: BoxShape.circle,
                         ),
-                        child: const Icon(
+                        child: Icon(
                           Icons.person,
-                          color: AppTheme.darkGreen,
+                          color: DutioPalette.of(context).accent,
                         ),
                       ),
                       const SizedBox(width: 12),
@@ -154,10 +154,10 @@ class CrewPointsScreen extends StatelessWidget {
                           children: [
                             Text(
                               member['name'] as String,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w600,
                                 fontSize: 13,
-                                color: AppTheme.dark,
+                                color: DutioPalette.of(context).textPrimary,
                               ),
                             ),
                             const SizedBox(height: 4),
@@ -173,8 +173,8 @@ class CrewPointsScreen extends StatelessWidget {
                       ),
                       Text(
                         '${member['points']} pts',
-                        style: const TextStyle(
-                          color: AppTheme.darkGreen,
+                        style: TextStyle(
+                          color: DutioPalette.of(context).accent,
                           fontWeight: FontWeight.bold,
                           fontSize: 13,
                         ),
@@ -189,20 +189,23 @@ class CrewPointsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppTheme.lightGreen,
+                  color: DutioPalette.of(context).surfaceVariant,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
-                    Icon(Icons.lightbulb_outline,
-                        color: AppTheme.darkGreen, size: 25),
+                    Icon(
+                      Icons.lightbulb_outline,
+                      color: DutioPalette.of(context).accent,
+                      size: 25,
+                    ),
                     SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         'Every completed task brings you closer to a cleaner and better dormitory!',
                         style: TextStyle(
                           fontSize: 12,
-                          color: AppTheme.dark,
+                          color: DutioPalette.of(context).textPrimary,
                           height: 1.5,
                         ),
                       ),

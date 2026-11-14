@@ -68,19 +68,23 @@ class NotificationsScreen extends StatelessWidget {
                     padding: EdgeInsets.zero,
                     child: ListTile(
                       leading: CircleAvatar(
-                        backgroundColor: AppTheme.lightGreen,
-                        child: Icon(item.$3, color: AppTheme.darkGreen),
+                        backgroundColor: DutioPalette.of(context)
+                            .surfaceVariant,
+                        child: Icon(
+                          item.$3,
+                          color: DutioPalette.of(context).accent,
+                        ),
                       ),
                       title: Text(
                         item.$1,
                         style: const TextStyle(fontWeight: FontWeight.w700),
                       ),
                       subtitle: Text(item.$2),
-                      trailing: const Text(
+                      trailing: Text(
                         '1 jam lalu',
                         style: TextStyle(
                           fontSize: 10,
-                          color: AppTheme.charcoal,
+                          color: DutioPalette.of(context).secondaryText,
                         ),
                       ),
                     ),

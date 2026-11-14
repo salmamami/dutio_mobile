@@ -22,7 +22,7 @@ class PhotoPreviewScreen extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: Image.asset(
-                  'assets/images/bathroom.png',
+                  'assets/images/bathroom.jpg',
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -39,8 +39,8 @@ class PhotoPreviewScreen extends StatelessWidget {
                     icon: const Icon(Icons.refresh_rounded),
                     label: const Text('Ulangi'),
                     style: OutlinedButton.styleFrom(
-                      foregroundColor: AppTheme.darkGreen,
-                      side: const BorderSide(color: AppTheme.darkGreen),
+                      foregroundColor: DutioPalette.of(context).accent,
+                      side: BorderSide(color: DutioPalette.of(context).accent),
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                   ),
@@ -55,7 +55,7 @@ class PhotoPreviewScreen extends StatelessWidget {
                     icon: const Icon(Icons.upload_rounded),
                     label: const Text('Upload'),
                     style: FilledButton.styleFrom(
-                      backgroundColor: AppTheme.darkGreen,
+                      backgroundColor: DutioPalette.of(context).action,
                       foregroundColor: AppTheme.white,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),

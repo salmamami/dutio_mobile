@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
 class MissionScreen extends StatefulWidget {
@@ -11,31 +11,18 @@ class MissionScreen extends StatefulWidget {
 
 class _MissionScreenState extends State<MissionScreen> {
   final List<Map<String, dynamic>> tasks = [
-    {
-      'title': 'Menyapu lantai kamar mandi',
-      'done': false,
-    },
-    {
-      'title': 'Membersihkan wastafel',
-      'done': false,
-    },
-    {
-      'title': 'Mengepel lantai',
-      'done': false,
-    },
-    {
-      'title': 'Menguras bak mandi',
-      'done': false,
-    },
+    {'title': 'Menyapu lantai kamar mandi', 'done': false},
+    {'title': 'Membersihkan wastafel', 'done': false},
+    {'title': 'Mengepel lantai', 'done': false},
+    {'title': 'Menguras bak mandi', 'done': false},
   ];
 
-  int get completedTasks =>
-      tasks.where((task) => task['done'] == true).length;
+  int get completedTasks => tasks.where((task) => task['done'] == true).length;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: Column(
           children: [
@@ -50,26 +37,26 @@ class _MissionScreenState extends State<MissionScreen> {
                       children: [
                         IconButton(
                           onPressed: () => Navigator.pop(context),
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back_ios_new,
-                            color: AppTheme.dark,
+                            color: DutioPalette.of(context).textPrimary,
                             size: 20,
                           ),
                         ),
                         const SizedBox(width: 5),
-                        const Expanded(
+                        Expanded(
                           child: Text(
                             'Mission Cleaning',
                             style: TextStyle(
                               fontSize: 19,
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.darkGreen,
+                              color: DutioPalette.of(context).accent,
                             ),
                           ),
                         ),
-                        const Icon(
+                        Icon(
                           Icons.eco_outlined,
-                          color: AppTheme.darkGreen,
+                          color: DutioPalette.of(context).accent,
                           size: 27,
                         ),
                       ],
@@ -82,18 +69,18 @@ class _MissionScreenState extends State<MissionScreen> {
                       height: 165,
                       width: double.infinity,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE8EEDC),
+                        color: DutioPalette.of(context).heroSurface,
                         borderRadius: BorderRadius.circular(22),
                       ),
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
-                          const Positioned(
+                          Positioned(
                             left: 18,
                             top: 18,
                             child: Icon(
                               Icons.assignment_outlined,
-                              color: AppTheme.darkGreen,
+                              color: DutioPalette.of(context).accent,
                               size: 35,
                             ),
                           ),
@@ -109,17 +96,14 @@ class _MissionScreenState extends State<MissionScreen> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Text(
-                                '🧹',
-                                style: TextStyle(fontSize: 55),
-                              ),
+                              const Text('🧹', style: TextStyle(fontSize: 55)),
                               const SizedBox(height: 5),
-                              const Text(
+                              Text(
                                 'Let’s complete our mission!',
                                 style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
-                                  color: AppTheme.darkGreen,
+                                  color: DutioPalette.of(context).accent,
                                 ),
                               ),
                             ],
@@ -135,18 +119,18 @@ class _MissionScreenState extends State<MissionScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.sage,
+                        color: DutioPalette.of(context).sage,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Progress',
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: DutioPalette.of(context).onAccent,
                             ),
                           ),
                           const SizedBox(height: 14),
@@ -184,18 +168,17 @@ class _MissionScreenState extends State<MissionScreen> {
                               value: completedTasks / tasks.length,
                               minHeight: 8,
                               backgroundColor: Colors.white54,
-                              valueColor:
-                                  const AlwaysStoppedAnimation<Color>(
-                                AppTheme.darkGreen,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                DutioPalette.of(context).accent,
                               ),
                             ),
                           ),
                           const SizedBox(height: 7),
                           Text(
                             '${((completedTasks / tasks.length) * 100).toInt()}% Completed',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 11,
-                              color: Colors.white,
+                              color: DutioPalette.of(context).onAccent,
                             ),
                           ),
                         ],
@@ -208,19 +191,19 @@ class _MissionScreenState extends State<MissionScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Cleaning Tasks',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
-                            color: AppTheme.darkGreen,
+                            color: DutioPalette.of(context).accent,
                           ),
                         ),
                         Text(
                           '$completedTasks/${tasks.length} Done',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 11,
-                            color: AppTheme.sage,
+                            color: DutioPalette.of(context).sage,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -236,7 +219,7 @@ class _MissionScreenState extends State<MissionScreen> {
                       return Container(
                         margin: const EdgeInsets.only(bottom: 10),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: DutioPalette.of(context).surface,
                           borderRadius: BorderRadius.circular(15),
                         ),
                         child: CheckboxListTile(
@@ -246,7 +229,7 @@ class _MissionScreenState extends State<MissionScreen> {
                               tasks[index]['done'] = value ?? false;
                             });
                           },
-                          activeColor: AppTheme.darkGreen,
+                          activeColor: DutioPalette.of(context).accent,
                           checkboxShape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(5),
                           ),
@@ -254,15 +237,14 @@ class _MissionScreenState extends State<MissionScreen> {
                             task['title'],
                             style: TextStyle(
                               fontSize: 12,
-                              color: AppTheme.dark,
+                              color: DutioPalette.of(context).textPrimary,
                               fontWeight: FontWeight.w500,
                               decoration: task['done']
                                   ? TextDecoration.lineThrough
                                   : TextDecoration.none,
                             ),
                           ),
-                          controlAffinity:
-                              ListTileControlAffinity.leading,
+                          controlAffinity: ListTileControlAffinity.leading,
                           contentPadding: const EdgeInsets.symmetric(
                             horizontal: 10,
                             vertical: 3,
@@ -277,36 +259,22 @@ class _MissionScreenState extends State<MissionScreen> {
 
             // BOTTOM NAVIGATION
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 22,
-                vertical: 12,
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
+              decoration: BoxDecoration(
+                color: DutioPalette.of(context).surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _NavItem(
-                    icon: Icons.home_rounded,
-                    label: 'Home',
-                  ),
+                  _NavItem(icon: Icons.home_rounded, label: 'Home'),
                   _NavItem(
                     icon: Icons.check_circle_outline,
                     label: 'Mission',
                     active: true,
                   ),
-                  _NavItem(
-                    icon: Icons.emoji_events_outlined,
-                    label: 'Points',
-                  ),
-                  _NavItem(
-                    icon: Icons.person_outline,
-                    label: 'Profile',
-                  ),
+                  _NavItem(icon: Icons.emoji_events_outlined, label: 'Points'),
+                  _NavItem(icon: Icons.person_outline, label: 'Profile'),
                 ],
               ),
             ),
@@ -318,33 +286,30 @@ class _MissionScreenState extends State<MissionScreen> {
 
   Widget _progressItem(String title, String value, IconData icon) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        vertical: 12,
-        horizontal: 5,
-      ),
+      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 5),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DutioPalette.of(context).surface,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
         children: [
-          Icon(icon, color: AppTheme.darkGreen, size: 19),
+          Icon(icon, color: DutioPalette.of(context).accent, size: 19),
           const SizedBox(height: 7),
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 19,
               fontWeight: FontWeight.bold,
-              color: AppTheme.darkGreen,
+              color: DutioPalette.of(context).accent,
             ),
           ),
           const SizedBox(height: 3),
           Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 9,
-              color: AppTheme.dark,
+              color: DutioPalette.of(context).textPrimary,
             ),
           ),
         ],
@@ -372,14 +337,14 @@ class _NavItem extends StatelessWidget {
         Icon(
           icon,
           size: 23,
-          color: active ? AppTheme.darkGreen : Colors.grey,
+          color: active ? DutioPalette.of(context).accent : Colors.grey,
         ),
         const SizedBox(height: 4),
         Text(
           label,
           style: TextStyle(
             fontSize: 10,
-            color: active ? AppTheme.darkGreen : Colors.grey,
+            color: active ? DutioPalette.of(context).accent : Colors.grey,
             fontWeight: active ? FontWeight.bold : FontWeight.normal,
           ),
         ),

@@ -21,7 +21,7 @@ class CameraScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.asset('assets/images/bathroom.png', fit: BoxFit.cover),
+                Image.asset('assets/images/bathroom.jpg', fit: BoxFit.cover),
                 Center(
                   child: Container(
                     margin: const EdgeInsets.all(24),

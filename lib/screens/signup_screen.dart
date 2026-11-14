@@ -18,9 +18,9 @@ class SignupScreen extends StatelessWidget {
             showBack: true,
           ),
           const SizedBox(height: 30),
-          const Icon(
+          Icon(
             Icons.admin_panel_settings_outlined,
-            color: AppTheme.darkGreen,
+            color: DutioPalette.of(context).accent,
             size: 68,
           ),
           const SizedBox(height: 22),
@@ -45,10 +45,13 @@ class SignupScreen extends StatelessWidget {
                 Navigator.pushReplacementNamed(context, '/coordinator'),
           ),
           const SizedBox(height: 20),
-          const Text(
+          Text(
             'Akun contoh untuk prototipe UI. Pendaftaran akan tersambung ke API pada tahap berikutnya.',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 12, color: AppTheme.charcoal),
+            style: TextStyle(
+              fontSize: 12,
+              color: DutioPalette.of(context).secondaryText,
+            ),
           ),
         ],
       ),

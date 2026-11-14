@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../core/app_theme.dart';
+import '../core/app_theme_controller.dart';
 import '../widgets/dutio_widgets.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -13,7 +14,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool darkMode = false;
   bool notifications = true;
 
   @override
@@ -30,8 +30,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               children: [
                 Container(
                   height: 224,
-                  decoration: const BoxDecoration(
-                    color: AppTheme.sage,
+                  decoration: BoxDecoration(
+                    color: DutioPalette.of(context).sage,
                     borderRadius: BorderRadius.vertical(
                       bottom: Radius.circular(150),
                     ),
@@ -42,9 +42,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   left: 16,
                   child: IconButton(
                     onPressed: () => Navigator.maybePop(context),
-                    icon: const Icon(
+                    icon: Icon(
                       Icons.arrow_back_rounded,
-                      color: AppTheme.white,
+                      color: DutioPalette.of(context).onAccent,
                     ),
                   ),
                 ),
@@ -57,8 +57,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   top: 26,
                   child: Text(
                     isMember ? 'Crew' : 'Captain',
-                    style: const TextStyle(
-                      color: AppTheme.cream,
+                    style: TextStyle(
+                      color: DutioPalette.of(context).onAccent,
                       fontSize: 27,
                       fontWeight: FontWeight.w900,
                     ),
@@ -69,14 +69,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: Container(
                     width: 144,
                     height: 144,
-                    decoration: const BoxDecoration(
-                      color: Color(0xFFD8D8D8),
+                    decoration: BoxDecoration(
+                      color: DutioPalette.of(context).surfaceVariant,
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.person_outline_rounded,
                       size: 96,
-                      color: AppTheme.ink,
+                      color: DutioPalette.of(context).textPrimary,
                     ),
                   ),
                 ),
@@ -91,12 +91,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
             Expanded(
               child: Container(
                 padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
-                decoration: const BoxDecoration(
-                  color: AppTheme.white,
+                decoration: BoxDecoration(
+                  color: DutioPalette.of(context).surface,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(42)),
                 ),
                 child: Material(
-                  color: AppTheme.white,
+                  color: DutioPalette.of(context).surface,
                   borderRadius: const BorderRadius.vertical(
                     top: Radius.circular(42),
                   ),
@@ -112,12 +112,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                       ),
-                      SwitchListTile(
-                        value: darkMode,
-                        onChanged: (value) => setState(() => darkMode = value),
-                        title: const Text('Dark Mode'),
-                        secondary: const Icon(Icons.sunny, color: Colors.amber),
-                        activeThumbColor: AppTheme.darkGreen,
+                      AnimatedBuilder(
+                        animation: AppThemeController.instance,
+                        builder: (context, _) => SwitchListTile(
+                          value: AppThemeController.instance.isDarkMode,
+                          onChanged: AppThemeController.instance.setDarkMode,
+                          title: const Text('Dark Mode'),
+                          secondary: const Icon(
+                            Icons.sunny,
+                            color: Colors.amber,
+                          ),
+                          activeThumbColor: DutioPalette.of(context).accent,
+                        ),
                       ),
                       SwitchListTile(
                         value: notifications,
@@ -128,7 +134,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           Icons.notifications_none_rounded,
                           color: Color(0xFFC49A48),
                         ),
-                        activeThumbColor: AppTheme.darkGreen,
+                        activeThumbColor: DutioPalette.of(context).accent,
                       ),
                       _routeTile(
                         context,
@@ -142,12 +148,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         'Account',
                         '/account',
                       ),
-                      const ListTile(
-                        leading: Icon(Icons.info_outline, color: AppTheme.sage),
+                      ListTile(
+                        leading: Icon(
+                          Icons.info_outline,
+                          color: DutioPalette.of(context).accent,
+                        ),
                         title: Text('About'),
                         trailing: Text(
                           'DUTIO 1.0.0',
-                          style: TextStyle(color: AppTheme.charcoal),
+                          style: TextStyle(
+                            color: DutioPalette.of(context).secondaryText,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 8),
@@ -157,8 +168,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         icon: const Icon(Icons.logout_rounded),
                         label: const Text('Logout'),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: AppTheme.darkGreen,
-                          side: const BorderSide(color: AppTheme.lightGreen),
+                          foregroundColor: DutioPalette.of(context).accent,
+                          side: BorderSide(
+                            color: DutioPalette.of(context).border,
+                          ),
                           padding: const EdgeInsets.symmetric(vertical: 14),
                         ),
                       ),
@@ -179,9 +192,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String title,
     String route,
   ) => ListTile(
-    leading: Icon(icon, color: AppTheme.darkGreen),
+    leading: Icon(icon, color: DutioPalette.of(context).accent),
     title: Text(title),
-    trailing: const Icon(Icons.chevron_right_rounded, color: Colors.black26),
+    trailing: Icon(
+      Icons.chevron_right_rounded,
+      color: DutioPalette.of(context).secondaryText,
+    ),
     onTap: () => Navigator.pushNamed(context, route, arguments: widget.role),
   );
 }

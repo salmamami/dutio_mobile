@@ -29,15 +29,15 @@ class _AreaManagementScreenState extends State<AreaManagementScreen> {
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: AppTheme.charcoal,
+                color: DutioPalette.of(context).mutedSurface,
                 borderRadius: BorderRadius.circular(24),
               ),
               child: ListView(
                 children: [
-                  const Text(
+                  Text(
                     'Daftar area tugas',
                     style: TextStyle(
-                      color: AppTheme.white,
+                      color: DutioPalette.of(context).onMutedSurface,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -46,12 +46,13 @@ class _AreaManagementScreenState extends State<AreaManagementScreen> {
                     Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       decoration: BoxDecoration(
-                        color: AppTheme.white,
+                        color: DutioPalette.of(context).surface,
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundColor: AppTheme.lightGreen,
+                          backgroundColor: DutioPalette.of(context)
+                              .surfaceVariant,
                           child: Text('${index + 1}'),
                         ),
                         title: Text(
@@ -62,9 +63,9 @@ class _AreaManagementScreenState extends State<AreaManagementScreen> {
                         trailing: IconButton(
                           onPressed: () =>
                               setState(() => areas.removeAt(index)),
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.delete_outline_rounded,
-                            color: AppTheme.charcoal,
+                            color: DutioPalette.of(context).secondaryText,
                           ),
                         ),
                       ),

@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
 class UploadSuccessScreen extends StatelessWidget {
@@ -8,7 +8,7 @@ class UploadSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 28),
@@ -19,14 +19,14 @@ class UploadSuccessScreen extends StatelessWidget {
               Container(
                 width: 170,
                 height: 170,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFE8EEDC),
+                decoration: BoxDecoration(
+                  color: DutioPalette.of(context).heroSurface,
                   shape: BoxShape.circle,
                 ),
-                child: const Center(
+                child: Center(
                   child: Icon(
                     Icons.check_circle_rounded,
-                    color: AppTheme.darkGreen,
+                    color: DutioPalette.of(context).accent,
                     size: 105,
                   ),
                 ),
@@ -34,26 +34,26 @@ class UploadSuccessScreen extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              const Text(
+              Text(
                 'Upload Successful!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 23,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.darkGreen,
+                  color: DutioPalette.of(context).accent,
                 ),
               ),
 
               const SizedBox(height: 12),
 
-              const Text(
+              Text(
                 'Yeay! Laporan piketmu berhasil dikirim. '
                 'Terima kasih sudah menjaga kebersihan asrama!',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 13,
                   height: 1.6,
-                  color: AppTheme.dark,
+                  color: DutioPalette.of(context).textPrimary,
                 ),
               ),
 
@@ -67,7 +67,7 @@ class UploadSuccessScreen extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(17),
                 ),
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       Icons.hourglass_top_rounded,
@@ -84,16 +84,13 @@ class UploadSuccessScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.bold,
-                              color: AppTheme.darkGreen,
+                              color: DutioPalette.of(context).accent,
                             ),
                           ),
                           SizedBox(height: 4),
                           Text(
                             'Laporan akan diperiksa oleh koordinator.',
-                            style: TextStyle(
-                              fontSize: 10,
-                              color: Colors.grey,
-                            ),
+                            style: TextStyle(fontSize: 10, color: Colors.grey),
                           ),
                         ],
                       ),
@@ -116,7 +113,7 @@ class UploadSuccessScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.darkGreen,
+                    backgroundColor: DutioPalette.of(context).action,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 15),
                     shape: RoundedRectangleBorder(
@@ -125,9 +122,7 @@ class UploadSuccessScreen extends StatelessWidget {
                   ),
                   child: const Text(
                     'Kembali ke Home',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

@@ -28,15 +28,15 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
               child: Container(
                 height: 145,
                 decoration: BoxDecoration(
-                  color: AppTheme.sage,
+                  color: DutioPalette.of(context).sage,
                   borderRadius: BorderRadius.circular(28),
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.add_photo_alternate_outlined,
-                      color: AppTheme.cream,
+                      color: DutioPalette.of(context).background,
                       size: 40,
                     ),
                     SizedBox(height: 8),
@@ -58,14 +58,14 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
               ),
             ),
           ),
-          const Padding(
+          Padding(
             padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
                 'Your Recent Files',
                 style: TextStyle(
-                  color: AppTheme.charcoal,
+                  color: DutioPalette.of(context).secondaryText,
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
                 ),
@@ -84,7 +84,7 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
               ),
               itemBuilder: (context, index) {
                 final colors = [
-                  AppTheme.sage,
+                  DutioPalette.of(context).sage,
                   const Color(0xFFD8BCA2),
                   const Color(0xFFB5A884),
                   const Color(0xFFB7B6AD),
@@ -100,7 +100,7 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: selected == index
-                            ? AppTheme.darkGreen
+                            ? DutioPalette.of(context).accent
                             : Colors.transparent,
                         width: 3,
                       ),
@@ -111,7 +111,7 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                       children: [
                         if (index == 0)
                           Image.asset(
-                            'assets/images/bathroom.png',
+                            'assets/images/bathroom.jpg',
                             fit: BoxFit.cover,
                           )
                         else
@@ -123,12 +123,12 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                             size: 36,
                           ),
                         if (selected == index)
-                          const Positioned(
+                          Positioned(
                             top: 5,
                             right: 5,
                             child: CircleAvatar(
                               radius: 12,
-                              backgroundColor: AppTheme.darkGreen,
+                              backgroundColor: DutioPalette.of(context).action,
                               child: Icon(
                                 Icons.check,
                                 color: AppTheme.white,

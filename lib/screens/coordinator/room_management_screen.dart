@@ -33,7 +33,7 @@ class _RoomManagementScreenState extends State<RoomManagementScreen> {
                 ])
                   Chip(
                     label: Text(filter),
-                    backgroundColor: AppTheme.lightGreen,
+                    backgroundColor: DutioPalette.of(context).surfaceVariant,
                     side: BorderSide.none,
                   ),
               ],
@@ -44,7 +44,7 @@ class _RoomManagementScreenState extends State<RoomManagementScreen> {
               margin: const EdgeInsets.all(16),
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: AppTheme.charcoal,
+                color: DutioPalette.of(context).mutedSurface,
                 borderRadius: BorderRadius.circular(24),
               ),
               child: Column(
@@ -56,13 +56,13 @@ class _RoomManagementScreenState extends State<RoomManagementScreen> {
                           Container(
                             margin: const EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
-                              color: AppTheme.white,
+                              color: DutioPalette.of(context).surface,
                               borderRadius: BorderRadius.circular(16),
                             ),
                             child: ListTile(
-                              leading: const Icon(
+                              leading: Icon(
                                 Icons.meeting_room_outlined,
-                                color: AppTheme.darkGreen,
+                                color: DutioPalette.of(context).accent,
                               ),
                               title: Text(
                                 room,

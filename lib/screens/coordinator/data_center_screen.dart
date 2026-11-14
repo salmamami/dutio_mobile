@@ -20,17 +20,20 @@ class DataCenterScreen extends StatelessWidget {
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppTheme.lightGreen,
+              color: DutioPalette.of(context).surfaceVariant,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                Icon(Icons.info_outline, color: AppTheme.darkGreen),
+                Icon(
+                  Icons.info_outline,
+                  color: DutioPalette.of(context).accent,
+                ),
                 SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     'Kelola data kamar dan area piket pada satu tempat.',
-                    style: TextStyle(color: AppTheme.darkGreen),
+                    style: TextStyle(color: DutioPalette.of(context).accent),
                   ),
                 ),
               ],
@@ -40,9 +43,14 @@ class DataCenterScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Row(
               children: [
-                _statCard('32', 'Kamar', Icons.meeting_room_outlined),
+                _statCard(context, '32', 'Kamar', Icons.meeting_room_outlined),
                 const SizedBox(width: 12),
-                _statCard('16', 'Area Piket', Icons.cleaning_services_outlined),
+                _statCard(
+                  context,
+                  '16',
+                  'Area Piket',
+                  Icons.cleaning_services_outlined,
+                ),
               ],
             ),
           ),
@@ -83,23 +91,31 @@ class DataCenterScreen extends StatelessWidget {
     ),
   );
 
-  Widget _statCard(String value, String label, IconData icon) => Expanded(
+  Widget _statCard(
+    BuildContext context,
+    String value,
+    String label,
+    IconData icon,
+  ) => Expanded(
     child: Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: DutioPalette.of(context).surface,
         borderRadius: BorderRadius.circular(20),
-        boxShadow: const [
-          BoxShadow(color: AppTheme.blush, offset: Offset(0, 4)),
+        boxShadow: [
+          BoxShadow(
+            color: DutioPalette.of(context).blush,
+            offset: Offset(0, 4),
+          ),
         ],
       ),
       child: Column(
         children: [
-          Icon(icon, color: AppTheme.darkGreen, size: 28),
+          Icon(icon, color: DutioPalette.of(context).accent, size: 28),
           Text(
             value,
-            style: const TextStyle(
-              color: AppTheme.darkGreen,
+            style: TextStyle(
+              color: DutioPalette.of(context).accent,
               fontSize: 28,
               fontWeight: FontWeight.w900,
             ),
@@ -121,8 +137,8 @@ class DataCenterScreen extends StatelessWidget {
     child: ListTile(
       onTap: () => Navigator.pushNamed(context, route),
       leading: CircleAvatar(
-        backgroundColor: AppTheme.lightGreen,
-        child: Icon(icon, color: AppTheme.darkGreen),
+        backgroundColor: DutioPalette.of(context).surfaceVariant,
+        child: Icon(icon, color: DutioPalette.of(context).accent),
       ),
       title: Text(title, style: const TextStyle(fontWeight: FontWeight.w800)),
       subtitle: Text(subtitle),

@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
 class PhotoPreviewScreen extends StatelessWidget {
@@ -8,26 +8,20 @@ class PhotoPreviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: Column(
           children: [
             // HEADER
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 19,
-                    ),
+                    icon: const Icon(Icons.arrow_back_ios_new, size: 19),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -36,22 +30,19 @@ class PhotoPreviewScreen extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
-                            color: AppTheme.darkGreen,
+                            color: DutioPalette.of(context).accent,
                           ),
                         ),
                         Text(
                           'Review foto sebelum dikirim',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey,
-                          ),
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(
+                  Icon(
                     Icons.eco_outlined,
-                    color: AppTheme.darkGreen,
+                    color: DutioPalette.of(context).accent,
                     size: 25,
                   ),
                   const SizedBox(width: 10),
@@ -94,9 +85,9 @@ class PhotoPreviewScreen extends StatelessWidget {
                       icon: const Icon(Icons.refresh),
                       label: const Text('Ulangi'),
                       style: OutlinedButton.styleFrom(
-                        foregroundColor: AppTheme.darkGreen,
-                        side: const BorderSide(
-                          color: AppTheme.darkGreen,
+                        foregroundColor: DutioPalette.of(context).accent,
+                        side: BorderSide(
+                          color: DutioPalette.of(context).accent,
                         ),
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
@@ -117,7 +108,7 @@ class PhotoPreviewScreen extends StatelessWidget {
                       icon: const Icon(Icons.upload_rounded),
                       label: const Text('Upload'),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.darkGreen,
+                        backgroundColor: DutioPalette.of(context).action,
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         shape: RoundedRectangleBorder(
@@ -146,35 +137,19 @@ class _BathroomPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 1;
 
-    canvas.drawRect(
-      Rect.fromLTWH(0, 0, size.width, size.height * 0.65),
-      wall,
-    );
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height * 0.65), wall);
 
     canvas.drawRect(
-      Rect.fromLTWH(
-        0,
-        size.height * 0.65,
-        size.width,
-        size.height * 0.35,
-      ),
+      Rect.fromLTWH(0, size.height * 0.65, size.width, size.height * 0.35),
       floor,
     );
 
     for (double y = 0; y < size.height * 0.65; y += 65) {
-      canvas.drawLine(
-        Offset(0, y),
-        Offset(size.width, y),
-        tile,
-      );
+      canvas.drawLine(Offset(0, y), Offset(size.width, y), tile);
     }
 
     for (double x = 0; x < size.width; x += 75) {
-      canvas.drawLine(
-        Offset(x, 0),
-        Offset(x, size.height * 0.65),
-        tile,
-      );
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height * 0.65), tile);
     }
 
     canvas.drawLine(

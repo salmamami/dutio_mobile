@@ -37,9 +37,9 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             showBack: true,
           ),
           const SizedBox(height: 42),
-          const Icon(
+          Icon(
             Icons.mark_email_read_outlined,
-            color: AppTheme.darkGreen,
+            color: DutioPalette.of(context).accent,
             size: 74,
           ),
           const SizedBox(height: 20),

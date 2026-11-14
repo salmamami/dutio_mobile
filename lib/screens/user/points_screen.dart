@@ -49,7 +49,7 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
         child: Stack(
           children: [
             Container(
-              color: AppTheme.sage,
+              color: DutioPalette.of(context).sage,
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
@@ -73,7 +73,7 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
                 width: 126,
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppTheme.white,
+                  color: DutioPalette.of(context).surface,
                   borderRadius: BorderRadius.circular(18),
                   boxShadow: const [
                     BoxShadow(color: Color(0xFFFFD18B), offset: Offset(0, 7)),
@@ -81,10 +81,10 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
                 ),
                 child: Column(
                   children: [
-                    const Text(
+                    Text(
                       '8',
                       style: TextStyle(
-                        color: AppTheme.charcoal,
+                        color: DutioPalette.of(context).secondaryText,
                         fontSize: 44,
                         fontWeight: FontWeight.w900,
                       ),
@@ -92,7 +92,7 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
                     Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
-                        color: AppTheme.cream,
+                        color: DutioPalette.of(context).background,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Text(
@@ -117,8 +117,8 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
               top: 208,
               child: Container(
                 padding: const EdgeInsets.fromLTRB(14, 26, 14, 14),
-                decoration: const BoxDecoration(
-                  color: AppTheme.cream,
+                decoration: BoxDecoration(
+                  color: DutioPalette.of(context).background,
                   borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
                 ),
                 child: Column(
@@ -143,7 +143,7 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
                       child: Container(
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: AppTheme.charcoal,
+                          color: DutioPalette.of(context).mutedSurface,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: ListView(
@@ -167,7 +167,7 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
                                 ]
                               : [
                                   DutioPanel(
-                                    color: AppTheme.white,
+                                    color: DutioPalette.of(context).surface,
                                     child: const Text(
                                       'Piket terakhir • Kamar mandi kompleks\nDinilai baik oleh koordinator',
                                       style: TextStyle(height: 1.5),
@@ -193,13 +193,19 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: BoxDecoration(
-          color: active ? AppTheme.charcoal : const Color(0xFFF1EADF),
+          color: active
+              ? DutioPalette.of(context).mutedSurface
+              : DutioPalette.of(context).pointsInactiveSurface,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
-          style: TextStyle(color: active ? AppTheme.white : AppTheme.charcoal),
+          style: TextStyle(
+            color: active
+                ? DutioPalette.of(context).onMutedSurface
+                : DutioPalette.of(context).secondaryText,
+          ),
         ),
       ),
     ),
@@ -209,7 +215,7 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
     margin: const EdgeInsets.only(bottom: 10),
     padding: const EdgeInsets.all(12),
     decoration: BoxDecoration(
-      color: AppTheme.white,
+      color: DutioPalette.of(context).surface,
       borderRadius: BorderRadius.circular(20),
     ),
     child: Row(

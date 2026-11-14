@@ -36,12 +36,12 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
               padding: const EdgeInsets.all(16),
               children: [
                 DutioPanel(
-                  color: AppTheme.lightGreen,
+                  color: DutioPalette.of(context).surfaceVariant,
                   child: Row(
                     children: [
-                      const Icon(
+                      Icon(
                         Icons.task_alt_rounded,
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                       ),
                       const SizedBox(width: 10),
                       Expanded(
@@ -56,8 +56,8 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                 ),
                 const SizedBox(height: 16),
                 if (widget.isMission)
-                  const DutioPanel(
-                    color: AppTheme.lightGreen,
+                  DutioPanel(
+                    color: DutioPalette.of(context).surfaceVariant,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -79,7 +79,7 @@ class _ReportDetailScreenState extends State<ReportDetailScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(20),
                     child: Image.asset(
-                      'assets/images/bathroom.png',
+                      'assets/images/bathroom.jpg',
                       height: 260,
                       fit: BoxFit.cover,
                     ),

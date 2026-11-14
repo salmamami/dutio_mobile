@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
 class GalleryScreen extends StatefulWidget {
@@ -24,26 +24,20 @@ class _GalleryScreenState extends State<GalleryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: Column(
           children: [
             // HEADER
             Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 12,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
               child: Row(
                 children: [
                   IconButton(
                     onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      size: 19,
-                    ),
+                    icon: const Icon(Icons.arrow_back_ios_new, size: 19),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -52,22 +46,19 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
-                            color: AppTheme.darkGreen,
+                            color: DutioPalette.of(context).accent,
                           ),
                         ),
                         Text(
                           'Pilih foto dari galeri',
-                          style: TextStyle(
-                            fontSize: 10,
-                            color: Colors.grey,
-                          ),
+                          style: TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(
+                  Icon(
                     Icons.eco_outlined,
-                    color: AppTheme.darkGreen,
+                    color: DutioPalette.of(context).accent,
                     size: 25,
                   ),
                   const SizedBox(width: 10),
@@ -82,16 +73,16 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 width: double.infinity,
                 height: 125,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFDCE3CB),
+                  color: DutioPalette.of(context).uploadSurface,
                   borderRadius: BorderRadius.circular(18),
                 ),
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.cloud_upload_outlined,
                       size: 38,
-                      color: AppTheme.darkGreen,
+                      color: DutioPalette.of(context).accent,
                     ),
                     SizedBox(height: 8),
                     Text(
@@ -99,7 +90,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                       ),
                     ),
                     SizedBox(height: 3),
@@ -107,7 +98,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                       'Pilih gambar untuk laporan piket',
                       style: TextStyle(
                         fontSize: 10,
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                       ),
                     ),
                   ],
@@ -118,7 +109,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
             const SizedBox(height: 22),
 
             // RECENT FILES TITLE
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Align(
                 alignment: Alignment.centerLeft,
@@ -126,7 +117,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   'Your Recent Files',
                   style: TextStyle(
                     fontSize: 12,
-                    color: AppTheme.dark,
+                    color: DutioPalette.of(context).textPrimary,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -141,8 +132,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: GridView.builder(
                   itemCount: photoColors.length,
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
@@ -163,7 +153,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
                             color: isSelected
-                                ? AppTheme.darkGreen
+                                ? DutioPalette.of(context).accent
                                 : Colors.transparent,
                             width: 3,
                           ),
@@ -178,12 +168,13 @@ class _GalleryScreenState extends State<GalleryScreen> {
                               ),
                             ),
                             if (isSelected)
-                              const Positioned(
+                              Positioned(
                                 right: 6,
                                 top: 6,
                                 child: CircleAvatar(
                                   radius: 12,
-                                  backgroundColor: AppTheme.darkGreen,
+                                  backgroundColor: DutioPalette.of(context)
+                                      .action,
                                   child: Icon(
                                     Icons.check,
                                     color: Colors.white,
@@ -217,7 +208,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   icon: const Icon(Icons.upload_rounded),
                   label: const Text('Unggah Foto'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppTheme.darkGreen,
+                    backgroundColor: DutioPalette.of(context).action,
                     foregroundColor: Colors.white,
                     disabledBackgroundColor: Colors.grey.shade300,
                     padding: const EdgeInsets.symmetric(vertical: 15),

@@ -29,7 +29,7 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
   Widget build(BuildContext context) {
     final room = selectedRoom;
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: Column(
           children: [
@@ -43,7 +43,7 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
                       decoration: InputDecoration(
                         hintText: 'Search',
                         prefixIcon: const Icon(Icons.search_rounded),
-                        fillColor: AppTheme.lightGreen,
+                        fillColor: DutioPalette.of(context).surfaceVariant,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(22),
                           borderSide: BorderSide.none,
@@ -66,9 +66,13 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
                           horizontal: 8,
                           vertical: 3,
                         ),
-                        leading: const CircleAvatar(
-                          backgroundColor: AppTheme.lightGreen,
-                          child: Icon(Icons.person, color: AppTheme.darkGreen),
+                        leading: CircleAvatar(
+                          backgroundColor: DutioPalette.of(context)
+                              .surfaceVariant,
+                          child: Icon(
+                            Icons.person,
+                            color: DutioPalette.of(context).accent,
+                          ),
                         ),
                         title: Text(
                           name,
@@ -99,13 +103,17 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
                         margin: const EdgeInsets.only(bottom: 12),
                         padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: item.$2 ? AppTheme.sage : AppTheme.white,
+                          color: item.$2
+                              ? DutioPalette.of(context).sage
+                              : DutioPalette.of(context).surface,
                           borderRadius: BorderRadius.circular(18),
                         ),
                         child: Text(
                           item.$1,
                           style: TextStyle(
-                            color: item.$2 ? AppTheme.white : AppTheme.dark,
+                            color: item.$2
+                                ? AppTheme.white
+                                : DutioPalette.of(context).textPrimary,
                           ),
                         ),
                       ),
@@ -126,9 +134,9 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
                               ),
                             ),
                           ),
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.add_circle_outline,
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                       ),
                     ),
                     Expanded(
@@ -136,7 +144,7 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
                         controller: controller,
                         decoration: InputDecoration(
                           hintText: 'Kirim pesan',
-                          fillColor: AppTheme.white,
+                          fillColor: DutioPalette.of(context).surface,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(24),
                             borderSide: BorderSide.none,
@@ -147,7 +155,7 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
                     IconButton.filled(
                       onPressed: _sendMessage,
                       style: IconButton.styleFrom(
-                        backgroundColor: AppTheme.darkGreen,
+                        backgroundColor: DutioPalette.of(context).action,
                       ),
                       icon: const Icon(
                         Icons.send_rounded,
@@ -164,14 +172,14 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
     );
   }
 
-  Widget _listHeader() => const Padding(
+  Widget _listHeader() => Padding(
     padding: EdgeInsets.fromLTRB(20, 16, 20, 10),
     child: Row(
       children: [
         Text(
           'Chat',
           style: TextStyle(
-            color: AppTheme.darkGreen,
+            color: DutioPalette.of(context).accent,
             fontSize: 22,
             fontWeight: FontWeight.w900,
           ),
@@ -184,8 +192,8 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
 
   Widget _chatHeader(String room) => Container(
     padding: const EdgeInsets.fromLTRB(6, 8, 14, 8),
-    decoration: const BoxDecoration(
-      color: AppTheme.cream,
+    decoration: BoxDecoration(
+      color: DutioPalette.of(context).background,
       boxShadow: [BoxShadow(color: Color(0x22000000), blurRadius: 4)],
     ),
     child: Row(
@@ -194,16 +202,16 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
           onPressed: () => setState(() => selectedRoom = null),
           icon: const Icon(Icons.arrow_back_rounded),
         ),
-        const CircleAvatar(
-          backgroundColor: AppTheme.lightGreen,
-          child: Icon(Icons.person, color: AppTheme.darkGreen),
+        CircleAvatar(
+          backgroundColor: DutioPalette.of(context).surfaceVariant,
+          child: Icon(Icons.person, color: DutioPalette.of(context).accent),
         ),
         const SizedBox(width: 8),
         Expanded(
           child: Text(
             room,
-            style: const TextStyle(
-              color: AppTheme.darkGreen,
+            style: TextStyle(
+              color: DutioPalette.of(context).accent,
               fontWeight: FontWeight.w800,
             ),
           ),
@@ -224,7 +232,10 @@ class _CoordinatorChatScreenState extends State<CoordinatorChatScreen> {
               ],
             ),
           ),
-          icon: const Icon(Icons.call_outlined, color: AppTheme.darkGreen),
+          icon: Icon(
+            Icons.call_outlined,
+            color: DutioPalette.of(context).accent,
+          ),
         ),
         const DutioLogo(size: 28),
       ],

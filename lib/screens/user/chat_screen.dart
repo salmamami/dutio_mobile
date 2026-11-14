@@ -25,28 +25,28 @@ class _UserChatScreenState extends State<UserChatScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    backgroundColor: AppTheme.cream,
+    backgroundColor: DutioPalette.of(context).background,
     body: SafeArea(
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.fromLTRB(12, 8, 16, 10),
-            decoration: const BoxDecoration(
-              color: AppTheme.cream,
+            decoration: BoxDecoration(
+              color: DutioPalette.of(context).background,
               boxShadow: [BoxShadow(color: Color(0x22000000), blurRadius: 4)],
             ),
             child: Row(
               children: [
-                const CircleAvatar(
-                  backgroundColor: AppTheme.darkGreen,
+                CircleAvatar(
+                  backgroundColor: DutioPalette.of(context).action,
                   child: Icon(Icons.person, color: AppTheme.white),
                 ),
                 const SizedBox(width: 10),
-                const Expanded(
+                Expanded(
                   child: Text(
                     'Koordinator',
                     style: TextStyle(
-                      color: AppTheme.darkGreen,
+                      color: DutioPalette.of(context).accent,
                       fontWeight: FontWeight.w800,
                     ),
                   ),
@@ -67,14 +67,14 @@ class _UserChatScreenState extends State<UserChatScreen> {
                       ],
                     ),
                   ),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.call_outlined,
-                    color: AppTheme.darkGreen,
+                    color: DutioPalette.of(context).accent,
                   ),
                 ),
-                const Icon(
+                Icon(
                   Icons.person_outline_rounded,
-                  color: AppTheme.darkGreen,
+                  color: DutioPalette.of(context).accent,
                 ),
               ],
             ),
@@ -94,7 +94,9 @@ class _UserChatScreenState extends State<UserChatScreen> {
                     margin: const EdgeInsets.only(bottom: 14),
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: message.$2 ? AppTheme.sage : AppTheme.white,
+                      color: message.$2
+                          ? DutioPalette.of(context).sage
+                          : DutioPalette.of(context).surface,
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(18),
                         topRight: const Radius.circular(18),
@@ -108,7 +110,9 @@ class _UserChatScreenState extends State<UserChatScreen> {
                     child: Text(
                       message.$1,
                       style: TextStyle(
-                        color: message.$2 ? AppTheme.white : AppTheme.dark,
+                        color: message.$2
+                            ? AppTheme.white
+                            : DutioPalette.of(context).textPrimary,
                       ),
                     ),
                   ),
@@ -126,9 +130,9 @@ class _UserChatScreenState extends State<UserChatScreen> {
                       content: Text('Lampiran tersedia setelah API terhubung.'),
                     ),
                   ),
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.add_circle_outline,
-                    color: AppTheme.darkGreen,
+                    color: DutioPalette.of(context).accent,
                   ),
                 ),
                 Expanded(
@@ -137,7 +141,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
                     decoration: InputDecoration(
                       hintText: 'Kirim pesan',
                       filled: true,
-                      fillColor: AppTheme.white,
+                      fillColor: DutioPalette.of(context).surface,
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: 16,
                         vertical: 10,
@@ -159,7 +163,7 @@ class _UserChatScreenState extends State<UserChatScreen> {
                     });
                   },
                   style: IconButton.styleFrom(
-                    backgroundColor: AppTheme.darkGreen,
+                    backgroundColor: DutioPalette.of(context).action,
                   ),
                   icon: const Icon(Icons.send_rounded, color: AppTheme.white),
                 ),

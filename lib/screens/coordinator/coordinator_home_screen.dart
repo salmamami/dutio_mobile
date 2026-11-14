@@ -24,7 +24,7 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
           children: [
             const DutioLogo(size: 38),
             const SizedBox(width: 10),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -32,7 +32,7 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
                   Text(
                     'Captain!',
                     style: TextStyle(
-                      color: AppTheme.darkGreen,
+                      color: DutioPalette.of(context).accent,
                       fontSize: 19,
                       fontWeight: FontWeight.w900,
                     ),
@@ -60,7 +60,7 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
         ),
       ),
       Container(
-        color: AppTheme.sage,
+        color: DutioPalette.of(context).sage,
         padding: const EdgeInsets.symmetric(vertical: 22),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -91,8 +91,8 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
         child: Container(
           margin: const EdgeInsets.only(top: 0),
           padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-          decoration: const BoxDecoration(
-            color: AppTheme.cream,
+          decoration: BoxDecoration(
+            color: DutioPalette.of(context).background,
             borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
           ),
           child: Column(
@@ -111,8 +111,8 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
                           padding: const EdgeInsets.symmetric(vertical: 9),
                           decoration: BoxDecoration(
                             color: active
-                                ? AppTheme.charcoal
-                                : const Color(0xFFF0EAE0),
+                                ? DutioPalette.of(context).mutedSurface
+                                : DutioPalette.of(context).inactiveSurface,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -120,8 +120,8 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: active
-                                  ? AppTheme.white
-                                  : AppTheme.charcoal,
+                                  ? DutioPalette.of(context).onMutedSurface
+                                  : DutioPalette.of(context).secondaryText,
                               fontSize: 12,
                             ),
                           ),
@@ -135,7 +135,7 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
               Expanded(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: AppTheme.charcoal,
+                    color: DutioPalette.of(context).mutedSurface,
                     borderRadius: BorderRadius.circular(22),
                   ),
                   child: ListView(
@@ -149,8 +149,8 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
                               : tab == 1
                               ? 'Progress checklist crew'
                               : 'Tinjau laporan piket terbaru',
-                          style: const TextStyle(
-                            color: AppTheme.white,
+                          style: TextStyle(
+                            color: DutioPalette.of(context).onMutedSurface,
                             fontSize: 13,
                           ),
                         ),
@@ -183,16 +183,20 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
           width: 70,
           height: 70,
           decoration: BoxDecoration(
-            color: AppTheme.cream,
+            color: DutioPalette.of(context).background,
             borderRadius: BorderRadius.circular(22),
           ),
-          child: Icon(icon, color: AppTheme.ink, size: 38),
+          child: Icon(
+            icon,
+            color: DutioPalette.of(context).textStrong,
+            size: 38,
+          ),
         ),
         const SizedBox(height: 6),
         Text(
           title,
-          style: const TextStyle(
-            color: AppTheme.white,
+          style: TextStyle(
+            color: DutioPalette.of(context).onAccent,
             fontSize: 11,
             fontWeight: FontWeight.w700,
           ),
@@ -220,7 +224,7 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
-          color: AppTheme.white,
+          color: DutioPalette.of(context).surface,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -240,9 +244,9 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
                   const SizedBox(height: 4),
                   Text(
                     subtitle,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 11,
-                      color: AppTheme.charcoal,
+                      color: DutioPalette.of(context).secondaryText,
                     ),
                   ),
                 ],
@@ -251,14 +255,21 @@ class _CoordinatorHomeScreenState extends State<CoordinatorHomeScreen> {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               decoration: BoxDecoration(
-                color: index == 0 ? AppTheme.darkGreen : AppTheme.blush,
+                color: index == 0
+                    ? DutioPalette.of(context).action
+                    : DutioPalette.of(context).blush,
                 borderRadius: BorderRadius.circular(22),
               ),
               child: Text(
                 tab == 2
                     ? 'Kamar ${String.fromCharCode(65 + index)}'
                     : 'Kamar A',
-                style: const TextStyle(color: AppTheme.white, fontSize: 11),
+                style: TextStyle(
+                  color: index == 0
+                      ? DutioPalette.of(context).onAccent
+                      : DutioPalette.of(context).onBlush,
+                  fontSize: 11,
+                ),
               ),
             ),
           ],

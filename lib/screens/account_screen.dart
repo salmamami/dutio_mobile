@@ -55,7 +55,7 @@ class _AccountScreenState extends State<AccountScreen> {
               margin: const EdgeInsets.all(18),
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: AppTheme.sage,
+                color: DutioPalette.of(context).sage,
                 borderRadius: BorderRadius.circular(26),
               ),
               child: ListView(
@@ -63,14 +63,14 @@ class _AccountScreenState extends State<AccountScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppTheme.lightGreen,
+                      color: DutioPalette.of(context).surfaceVariant,
                       borderRadius: BorderRadius.circular(18),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Kelola Akunmu yuk!',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
@@ -103,8 +103,8 @@ class _AccountScreenState extends State<AccountScreen> {
                     icon: const Icon(Icons.logout_rounded),
                     label: const Text('Logout'),
                     style: OutlinedButton.styleFrom(
-                      backgroundColor: AppTheme.white,
-                      foregroundColor: AppTheme.darkGreen,
+                      backgroundColor: DutioPalette.of(context).surface,
+                      foregroundColor: DutioPalette.of(context).accent,
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
                   ),
@@ -122,8 +122,8 @@ class _AccountScreenState extends State<AccountScreen> {
     children: [
       Text(
         label,
-        style: const TextStyle(
-          color: AppTheme.ink,
+        style: TextStyle(
+          color: DutioPalette.of(context).textStrong,
           fontWeight: FontWeight.w800,
         ),
       ),
@@ -133,9 +133,9 @@ class _AccountScreenState extends State<AccountScreen> {
         readOnly: !editing,
         decoration: InputDecoration(
           filled: true,
-          fillColor: AppTheme.white,
+          fillColor: DutioPalette.of(context).surface,
           suffixIcon: editing
-              ? const Icon(Icons.edit_outlined, color: AppTheme.sage)
+              ? Icon(Icons.edit_outlined, color: DutioPalette.of(context).sage)
               : null,
         ),
       ),

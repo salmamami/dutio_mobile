@@ -17,33 +17,36 @@ class UploadSuccessScreen extends StatelessWidget {
             Container(
               width: 148,
               height: 148,
-              decoration: const BoxDecoration(
-                color: AppTheme.lightGreen,
+              decoration: BoxDecoration(
+                color: DutioPalette.of(context).surfaceVariant,
                 shape: BoxShape.circle,
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.check_circle_rounded,
-                color: AppTheme.darkGreen,
+                color: DutioPalette.of(context).accent,
                 size: 96,
               ),
             ),
             const SizedBox(height: 24),
-            const Text(
+            Text(
               'Upload Complete',
               style: TextStyle(
-                color: AppTheme.darkGreen,
+                color: DutioPalette.of(context).accent,
                 fontSize: 23,
                 fontWeight: FontWeight.w900,
               ),
             ),
             const SizedBox(height: 10),
-            const Text(
+            Text(
               'All selected photos have been successfully uploaded. Laporanmu menunggu verifikasi koordinator.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: AppTheme.dark, height: 1.5),
+              style: TextStyle(
+                color: DutioPalette.of(context).textPrimary,
+                height: 1.5,
+              ),
             ),
             const SizedBox(height: 24),
-            const DutioPanel(
+            DutioPanel(
               child: Row(
                 children: [
                   Icon(Icons.hourglass_top_rounded, color: Color(0xFFD6A94A)),
@@ -52,7 +55,7 @@ class UploadSuccessScreen extends StatelessWidget {
                     child: Text(
                       'Status laporan\nMenunggu Verifikasi',
                       style: TextStyle(
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

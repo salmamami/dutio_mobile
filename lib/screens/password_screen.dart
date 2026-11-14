@@ -25,18 +25,21 @@ class _PasswordScreenState extends State<PasswordScreen> {
             margin: const EdgeInsets.fromLTRB(18, 16, 18, 0),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.lightGreen,
+              color: DutioPalette.of(context).surfaceVariant,
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Row(
+            child: Row(
               children: [
-                Icon(Icons.shield_outlined, color: AppTheme.darkGreen),
+                Icon(
+                  Icons.shield_outlined,
+                  color: DutioPalette.of(context).accent,
+                ),
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     'Pastikan keamanan akunmu ya',
                     style: TextStyle(
-                      color: AppTheme.darkGreen,
+                      color: DutioPalette.of(context).accent,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
@@ -49,7 +52,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
               margin: const EdgeInsets.all(18),
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: AppTheme.sage,
+                color: DutioPalette.of(context).sage,
                 borderRadius: BorderRadius.circular(24),
               ),
               child: ListView(

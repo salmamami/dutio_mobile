@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -8,19 +8,19 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Profile',
                 style: TextStyle(
                   fontSize: 26,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.dark,
+                  color: DutioPalette.of(context).textPrimary,
                 ),
               ),
               const SizedBox(height: 24),
@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(22),
                 decoration: BoxDecoration(
-                  color: AppTheme.sage,
+                  color: DutioPalette.of(context).sage,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Column(
@@ -38,30 +38,30 @@ class ProfileScreen extends StatelessWidget {
                     Container(
                       width: 85,
                       height: 85,
-                      decoration: const BoxDecoration(
-                        color: AppTheme.white,
+                      decoration: BoxDecoration(
+                        color: DutioPalette.of(context).surface,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.person,
                         size: 48,
-                        color: AppTheme.sage,
+                        color: DutioPalette.of(context).sage,
                       ),
                     ),
                     const SizedBox(height: 14),
-                    const Text(
+                    Text(
                       'Nama Pengguna',
                       style: TextStyle(
-                        color: AppTheme.white,
+                        color: DutioPalette.of(context).onAccent,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     const SizedBox(height: 5),
-                    const Text(
+                    Text(
                       'pengguna@email.com',
                       style: TextStyle(
-                        color: AppTheme.white,
+                        color: DutioPalette.of(context).onAccent,
                         fontSize: 13,
                       ),
                     ),
@@ -72,13 +72,14 @@ class ProfileScreen extends StatelessWidget {
                         vertical: 7,
                       ),
                       decoration: BoxDecoration(
-                        color: AppTheme.white.withValues(alpha: 0.2),
+                        color: DutioPalette.of(context).onAccent
+                            .withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Anggota • Kamar A',
                         style: TextStyle(
-                          color: AppTheme.white,
+                          color: DutioPalette.of(context).onAccent,
                           fontSize: 12,
                           fontWeight: FontWeight.w600,
                         ),
@@ -90,29 +91,32 @@ class ProfileScreen extends StatelessWidget {
 
               const SizedBox(height: 28),
 
-              const Text(
+              Text(
                 'Account Settings',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.dark,
+                  color: DutioPalette.of(context).textPrimary,
                 ),
               ),
               const SizedBox(height: 12),
 
               _menuItem(
+                context: context,
                 icon: Icons.person_outline,
                 title: 'Personal Information',
                 subtitle: 'Manage your account details',
                 onTap: () {},
               ),
               _menuItem(
+                context: context,
                 icon: Icons.notifications_none,
                 title: 'Notifications',
                 subtitle: 'Manage notification preferences',
                 onTap: () {},
               ),
               _menuItem(
+                context: context,
                 icon: Icons.lock_outline,
                 title: 'Privacy & Security',
                 subtitle: 'Manage your account security',
@@ -121,23 +125,25 @@ class ProfileScreen extends StatelessWidget {
 
               const SizedBox(height: 24),
 
-              const Text(
+              Text(
                 'About',
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.bold,
-                  color: AppTheme.dark,
+                  color: DutioPalette.of(context).textPrimary,
                 ),
               ),
               const SizedBox(height: 12),
 
               _menuItem(
+                context: context,
                 icon: Icons.info_outline,
                 title: 'About Dutio',
                 subtitle: 'Learn more about Dutio',
                 onTap: () {},
               ),
               _menuItem(
+                context: context,
                 icon: Icons.help_outline,
                 title: 'Help & Support',
                 subtitle: 'Get help using Dutio',
@@ -175,6 +181,7 @@ class ProfileScreen extends StatelessWidget {
   }
 
   Widget _menuItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
@@ -183,39 +190,39 @@ class ProfileScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: DutioPalette.of(context).surface,
         borderRadius: BorderRadius.circular(14),
       ),
       child: ListTile(
         onTap: onTap,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 5,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 5),
         leading: Container(
           width: 42,
           height: 42,
           decoration: BoxDecoration(
-            color: AppTheme.lightGreen,
+            color: DutioPalette.of(context).surfaceVariant,
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Icon(icon, color: AppTheme.darkGreen),
+          child: Icon(icon, color: DutioPalette.of(context).accent),
         ),
         title: Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.w600,
             fontSize: 14,
-            color: AppTheme.dark,
+            color: DutioPalette.of(context).textPrimary,
           ),
         ),
         subtitle: Text(
           subtitle,
-          style: const TextStyle(fontSize: 11, color: Colors.grey),
+          style: TextStyle(
+            fontSize: 11,
+            color: DutioPalette.of(context).secondaryText,
+          ),
         ),
-        trailing: const Icon(
+        trailing: Icon(
           Icons.chevron_right,
-          color: AppTheme.sage,
+          color: DutioPalette.of(context).sage,
         ),
       ),
     );

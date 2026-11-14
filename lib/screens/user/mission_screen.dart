@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../core/app_theme.dart';
+import '../../widgets/dutio_widgets.dart';
 
 class UserMissionScreen extends StatefulWidget {
   const UserMissionScreen({super.key});
@@ -27,7 +28,7 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
           : !completed.contains(entry.key),
     );
     return Container(
-      color: AppTheme.sage,
+      color: DutioPalette.of(context).sage,
       child: Column(
         children: [
           SizedBox(
@@ -76,15 +77,16 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                   child: Container(
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: AppTheme.blush.withValues(alpha: .95),
+                      color: DutioPalette.of(context).blush
+                          .withValues(alpha: .95),
                       borderRadius: BorderRadius.circular(26),
                     ),
                     child: Column(
                       children: [
-                        const Text(
+                        Text(
                           'Progress',
                           style: TextStyle(
-                            color: AppTheme.white,
+                            color: DutioPalette.of(context).onAccent,
                             fontSize: 16,
                             fontWeight: FontWeight.w800,
                           ),
@@ -122,18 +124,18 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
-              decoration: const BoxDecoration(
-                color: AppTheme.charcoal,
+              decoration: BoxDecoration(
+                color: DutioPalette.of(context).mutedSurface,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
               child: Column(
                 children: [
-                  const Align(
+                  Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       '🧼 Mission Cleanliness',
                       style: TextStyle(
-                        color: AppTheme.white,
+                        color: DutioPalette.of(context).onAccent,
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
                       ),
@@ -161,7 +163,7 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: const Color(0xFFB7B6AD),
+                        color: DutioPalette.of(context).graySurface,
                         borderRadius: BorderRadius.circular(22),
                       ),
                       child: ListView(
@@ -170,11 +172,11 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                             Container(
                               margin: const EdgeInsets.only(bottom: 12),
                               child: Material(
-                                color: AppTheme.white,
+                                color: DutioPalette.of(context).surface,
                                 borderRadius: BorderRadius.circular(20),
                                 child: CheckboxListTile(
                                   value: completed.contains(entry.key),
-                                  activeColor: AppTheme.darkGreen,
+                                  activeColor: DutioPalette.of(context).accent,
                                   controlAffinity:
                                       ListTileControlAffinity.leading,
                                   contentPadding: const EdgeInsets.symmetric(
@@ -182,8 +184,9 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                                   ),
                                   title: Text(
                                     entry.value,
-                                    style: const TextStyle(
-                                      color: AppTheme.ink,
+                                    style: TextStyle(
+                                      color: DutioPalette.of(context)
+                                          .textStrong,
                                       fontSize: 13,
                                       fontWeight: FontWeight.w700,
                                     ),
@@ -217,13 +220,13 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 4),
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: AppTheme.white,
+        color: DutioPalette.of(context).surface,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(icon, size: 19, color: AppTheme.darkGreen),
+          Icon(icon, size: 19, color: DutioPalette.of(context).accent),
           Text(
             title,
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
@@ -240,14 +243,18 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 9),
         decoration: BoxDecoration(
-          color: active ? AppTheme.charcoal : AppTheme.cream,
+          color: active
+              ? DutioPalette.of(context).mutedSurface
+              : DutioPalette.of(context).background,
           borderRadius: BorderRadius.circular(24),
         ),
         child: Text(
           label,
           textAlign: TextAlign.center,
           style: TextStyle(
-            color: active ? AppTheme.white : AppTheme.charcoal,
+            color: active
+                ? DutioPalette.of(context).onMutedSurface
+                : DutioPalette.of(context).secondaryText,
             fontSize: 13,
             fontWeight: FontWeight.w600,
           ),
@@ -261,6 +268,5 @@ class DutioMissionLogo extends StatelessWidget {
   const DutioMissionLogo({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      const Icon(Icons.lightbulb_rounded, color: Color(0xFFE9AC48), size: 50);
+  Widget build(BuildContext context) => const DutioLogo(size: 50);
 }

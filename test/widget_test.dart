@@ -1,9 +1,95 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:dutio_mobile/core/app_theme.dart';
+import 'package:dutio_mobile/core/app_theme_controller.dart';
 import 'package:dutio_mobile/main.dart';
 
 void main() {
+  testWidgets('dark mode toggles globally and persists the preference', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    await AppThemeController.instance.load();
+    addTearDown(() async {
+      await AppThemeController.instance.setDarkMode(false);
+    });
+
+    await _openLogin(tester);
+    await tester.tap(find.widgetWithText(FilledButton, 'Login'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Profile'));
+    await tester.pumpAndSettle();
+
+    final darkModeSwitch = find.widgetWithText(SwitchListTile, 'Dark Mode');
+    await tester.ensureVisible(darkModeSwitch);
+    await tester.tap(darkModeSwitch);
+    await tester.pumpAndSettle();
+
+    expect(AppThemeController.instance.isDarkMode, isTrue);
+    expect(
+      Theme.of(tester.element(find.byType(Scaffold).first)).brightness,
+      Brightness.dark,
+    );
+    final preferences = await SharedPreferences.getInstance();
+    expect(preferences.getBool('dutio_dark_mode'), isTrue);
+
+    await tester.tap(find.text('Home').last);
+    await tester.pumpAndSettle();
+    expect(
+      DutioPalette.of(tester.element(find.byType(Scaffold).first)).background,
+      DutioPalette.dark.background,
+    );
+
+    await AppThemeController.instance.load();
+    expect(AppThemeController.instance.isDarkMode, isTrue);
+  });
+
+  testWidgets('coordinator settings use the shared dark mode toggle', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({});
+    await AppThemeController.instance.load();
+    addTearDown(() async {
+      await AppThemeController.instance.setDarkMode(false);
+    });
+
+    await _openLogin(tester);
+    await tester.tap(find.text('Koordinator'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(FilledButton, 'Login'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Pengaturan'));
+    await tester.pumpAndSettle();
+
+    final darkModeSwitch = find.widgetWithText(SwitchListTile, 'Dark Mode');
+    await tester.tap(darkModeSwitch);
+    await tester.pumpAndSettle();
+
+    expect(AppThemeController.instance.isDarkMode, isTrue);
+    expect(
+      Theme.of(tester.element(find.byType(Scaffold).first)).brightness,
+      Brightness.dark,
+    );
+  });
+
+  testWidgets('wide viewport displays the app in a phone-sized layout', (
+    tester,
+  ) async {
+    tester.view.devicePixelRatio = 1;
+    tester.view.physicalSize = const Size(1024, 900);
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
+
+    await tester.pumpWidget(const DutioApp());
+    await tester.pump();
+
+    final appSize = tester.getSize(find.byType(Scaffold).first);
+    expect(appSize.width, 430);
+    expect(appSize.height, 900);
+  });
+
   testWidgets('member can complete checklist and send a chat message', (
     tester,
   ) async {
@@ -102,40 +188,41 @@ void main() {
     },
   );
 
-  testWidgets('member can navigate notification, settings, and account routes', (
-    tester,
-  ) async {
-    await _openLogin(tester);
-    await tester.tap(find.widgetWithText(FilledButton, 'Login'));
-    await tester.pumpAndSettle();
+  testWidgets(
+    'member can navigate notification, settings, and account routes',
+    (tester) async {
+      await _openLogin(tester);
+      await tester.tap(find.widgetWithText(FilledButton, 'Login'));
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.notifications_none_rounded));
-    await tester.pumpAndSettle();
-    expect(find.text('Notifikasi'), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.notifications_none_rounded));
+      await tester.pumpAndSettle();
+      expect(find.text('Notifikasi'), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Profile'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Password'));
-    await tester.pumpAndSettle();
-    expect(find.text('Password Lama'), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
-    await tester.pumpAndSettle();
+      await tester.tap(find.text('Profile'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Password'));
+      await tester.pumpAndSettle();
+      expect(find.text('Password Lama'), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Account'));
-    await tester.pumpAndSettle();
-    expect(find.text('Nama Pengguna'), findsOneWidget);
-    await tester.tap(find.byIcon(Icons.edit_outlined));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Simpan perubahan'));
-    await tester.pumpAndSettle();
-    expect(find.text('Perubahan disimpan di prototipe.'), findsOneWidget);
+      await tester.tap(find.text('Account'));
+      await tester.pumpAndSettle();
+      expect(find.text('Nama Pengguna'), findsOneWidget);
+      await tester.tap(find.byIcon(Icons.edit_outlined));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Simpan perubahan'));
+      await tester.pumpAndSettle();
+      expect(find.text('Perubahan disimpan di prototipe.'), findsOneWidget);
 
-    await tester.tap(find.text('Logout'));
-    await tester.pumpAndSettle();
-    expect(find.text('Crew, Let’s Move!'), findsOneWidget);
-  });
+      await tester.tap(find.text('Logout'));
+      await tester.pumpAndSettle();
+      expect(find.text('Crew, Let’s Move!'), findsOneWidget);
+    },
+  );
 
   testWidgets('coordinator can open room management and report detail', (
     tester,
@@ -160,7 +247,10 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Laporan piket • Kamar A'));
     await tester.pumpAndSettle();
-    expect(find.text('Laporan tugas piket sudah dikirim crew.'), findsOneWidget);
+    expect(
+      find.text('Laporan tugas piket sudah dikirim crew.'),
+      findsOneWidget,
+    );
   });
 }
 

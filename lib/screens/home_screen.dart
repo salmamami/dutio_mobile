@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppTheme.cream,
+      backgroundColor: DutioPalette.of(context).background,
       body: SafeArea(
         child: Column(
           children: [
@@ -21,13 +21,13 @@ class HomeScreen extends StatelessWidget {
                     // HEADER
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.eco_outlined,
-                          color: AppTheme.darkGreen,
+                          color: DutioPalette.of(context).accent,
                           size: 27,
                         ),
                         const SizedBox(width: 8),
-                        const Expanded(
+                        Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
                                 'Welcome',
                                 style: TextStyle(
                                   fontSize: 11,
-                                  color: AppTheme.dark,
+                                  color: DutioPalette.of(context).textPrimary,
                                 ),
                               ),
                               Text(
@@ -43,15 +43,15 @@ class HomeScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
-                                  color: AppTheme.darkGreen,
+                                  color: DutioPalette.of(context).accent,
                                 ),
                               ),
                             ],
                           ),
                         ),
-                        _headerButton(Icons.notifications_none),
+                        _headerButton(context, Icons.notifications_none),
                         const SizedBox(width: 9),
-                        _headerButton(Icons.person_outline),
+                        _headerButton(context, Icons.person_outline),
                       ],
                     ),
 
@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                       width: double.infinity,
                       height: 185,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE8EEDC),
+                        color: DutioPalette.of(context).heroSurface,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Stack(
@@ -73,20 +73,20 @@ class HomeScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   'Crew',
                                   style: TextStyle(
                                     fontSize: 27,
                                     fontWeight: FontWeight.w800,
-                                    color: AppTheme.darkGreen,
+                                    color: DutioPalette.of(context).action,
                                   ),
                                 ),
-                                const Text(
+                                Text(
                                   'on Duty',
                                   style: TextStyle(
                                     fontSize: 27,
                                     fontWeight: FontWeight.w800,
-                                    color: AppTheme.darkGreen,
+                                    color: DutioPalette.of(context).accent,
                                   ),
                                 ),
                                 const SizedBox(height: 8),
@@ -96,7 +96,7 @@ class HomeScreen extends StatelessWidget {
                                     vertical: 5,
                                   ),
                                   decoration: BoxDecoration(
-                                    color: AppTheme.darkGreen,
+                                    color: DutioPalette.of(context).accent,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
                                   child: const Text(
@@ -113,26 +113,17 @@ class HomeScreen extends StatelessWidget {
                           const Positioned(
                             right: 12,
                             bottom: 5,
-                            child: Text(
-                              '🧹',
-                              style: TextStyle(fontSize: 95),
-                            ),
+                            child: Text('🧹', style: TextStyle(fontSize: 95)),
                           ),
                           const Positioned(
                             right: 85,
                             top: 15,
-                            child: Text(
-                              '✨',
-                              style: TextStyle(fontSize: 25),
-                            ),
+                            child: Text('✨', style: TextStyle(fontSize: 25)),
                           ),
                           const Positioned(
                             right: 25,
                             top: 20,
-                            child: Text(
-                              '🌱',
-                              style: TextStyle(fontSize: 24),
-                            ),
+                            child: Text('🌱', style: TextStyle(fontSize: 24)),
                           ),
                         ],
                       ),
@@ -145,10 +136,10 @@ class HomeScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: AppTheme.sage,
+                        color: DutioPalette.of(context).sage,
                         borderRadius: BorderRadius.circular(18),
                       ),
-                      child: const Column(
+                      child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -156,7 +147,7 @@ class HomeScreen extends StatelessWidget {
                             style: TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                              color: DutioPalette.of(context).onAccent,
                             ),
                           ),
                           SizedBox(height: 3),
@@ -164,7 +155,7 @@ class HomeScreen extends StatelessWidget {
                             'Kamar mandi & kebersihan kamar',
                             style: TextStyle(
                               fontSize: 10,
-                              color: Colors.white,
+                              color: DutioPalette.of(context).onAccent,
                             ),
                           ),
                         ],
@@ -178,6 +169,7 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Expanded(
                           child: _infoCard(
+                            context,
                             Icons.calendar_month_outlined,
                             'Rabu, 12 November 2026',
                           ),
@@ -185,6 +177,7 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(width: 10),
                         Expanded(
                           child: _infoCard(
+                            context,
                             Icons.access_time,
                             '07:30 - 09:30',
                           ),
@@ -194,12 +187,12 @@ class HomeScreen extends StatelessWidget {
 
                     const SizedBox(height: 23),
 
-                    const Text(
+                    Text(
                       'Yuk mulai melakukan piket!',
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                       ),
                     ),
 
@@ -210,7 +203,7 @@ class HomeScreen extends StatelessWidget {
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: DutioPalette.of(context).surface,
                         borderRadius: BorderRadius.circular(17),
                         boxShadow: [
                           BoxShadow(
@@ -226,17 +219,17 @@ class HomeScreen extends StatelessWidget {
                             width: 45,
                             height: 45,
                             decoration: BoxDecoration(
-                              color: AppTheme.lightGreen,
+                              color: DutioPalette.of(context).surfaceVariant,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.checklist_rounded,
-                              color: AppTheme.darkGreen,
+                              color: DutioPalette.of(context).accent,
                               size: 28,
                             ),
                           ),
                           const SizedBox(width: 12),
-                          const Expanded(
+                          Expanded(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -245,7 +238,7 @@ class HomeScreen extends StatelessWidget {
                                   style: TextStyle(
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold,
-                                    color: AppTheme.dark,
+                                    color: DutioPalette.of(context).textPrimary,
                                   ),
                                 ),
                                 SizedBox(height: 3),
@@ -259,10 +252,10 @@ class HomeScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const Icon(
+                          Icon(
                             Icons.arrow_forward_ios_rounded,
                             size: 16,
-                            color: AppTheme.darkGreen,
+                            color: DutioPalette.of(context).accent,
                           ),
                         ],
                       ),
@@ -274,15 +267,10 @@ class HomeScreen extends StatelessWidget {
 
             // BOTTOM NAVIGATION
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 22,
-                vertical: 10,
-              ),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+              decoration: BoxDecoration(
+                color: DutioPalette.of(context).surface,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -292,18 +280,9 @@ class HomeScreen extends StatelessWidget {
                     label: 'Home',
                     active: true,
                   ),
-                  _NavItem(
-                    icon: Icons.check_circle_outline,
-                    label: 'Mission',
-                  ),
-                  _NavItem(
-                    icon: Icons.emoji_events_outlined,
-                    label: 'Points',
-                  ),
-                  _NavItem(
-                    icon: Icons.person_outline,
-                    label: 'Profile',
-                  ),
+                  _NavItem(icon: Icons.check_circle_outline, label: 'Mission'),
+                  _NavItem(icon: Icons.emoji_events_outlined, label: 'Points'),
+                  _NavItem(icon: Icons.person_outline, label: 'Profile'),
                 ],
               ),
             ),
@@ -313,41 +292,37 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  static Widget _headerButton(IconData icon) {
+  static Widget _headerButton(BuildContext context, IconData icon) {
     return Container(
       width: 34,
       height: 34,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DutioPalette.of(context).surface,
         shape: BoxShape.circle,
-        border: Border.all(color: AppTheme.lightGreen),
+        border: Border.all(color: DutioPalette.of(context).surfaceVariant),
       ),
-      child: Icon(
-        icon,
-        color: AppTheme.darkGreen,
-        size: 19,
-      ),
+      child: Icon(icon, color: DutioPalette.of(context).accent, size: 19),
     );
   }
 
-  static Widget _infoCard(IconData icon, String text) {
+  static Widget _infoCard(BuildContext context, IconData icon, String text) {
     return Container(
       height: 55,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: DutioPalette.of(context).surface,
         borderRadius: BorderRadius.circular(13),
       ),
       child: Row(
         children: [
-          Icon(icon, color: AppTheme.darkGreen, size: 18),
+          Icon(icon, color: DutioPalette.of(context).accent, size: 18),
           const SizedBox(width: 7),
           Expanded(
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 9,
-                color: AppTheme.dark,
+                color: DutioPalette.of(context).textPrimary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -377,14 +352,14 @@ class _NavItem extends StatelessWidget {
         Icon(
           icon,
           size: 22,
-          color: active ? AppTheme.darkGreen : Colors.grey,
+          color: active ? DutioPalette.of(context).accent : Colors.grey,
         ),
         const SizedBox(height: 3),
         Text(
           label,
           style: TextStyle(
             fontSize: 9,
-            color: active ? AppTheme.darkGreen : Colors.grey,
+            color: active ? DutioPalette.of(context).accent : Colors.grey,
             fontWeight: active ? FontWeight.bold : FontWeight.normal,
           ),
         ),

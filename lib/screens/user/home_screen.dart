@@ -17,7 +17,7 @@ class UserHomeScreen extends StatelessWidget {
           children: [
             const DutioLogo(size: 38),
             const SizedBox(width: 10),
-            const Expanded(
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -25,7 +25,7 @@ class UserHomeScreen extends StatelessWidget {
                   Text(
                     'Kamar A',
                     style: TextStyle(
-                      color: AppTheme.darkGreen,
+                      color: DutioPalette.of(context).accent,
                       fontSize: 19,
                       fontWeight: FontWeight.w800,
                     ),
@@ -33,11 +33,11 @@ class UserHomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            _roundIcon(Icons.notifications_none_rounded, () {
+            _roundIcon(context, Icons.notifications_none_rounded, () {
               Navigator.pushNamed(context, '/notifications');
             }),
             const SizedBox(width: 10),
-            _roundIcon(Icons.person_outline_rounded, () {
+            _roundIcon(context, Icons.person_outline_rounded, () {
               Navigator.pushNamed(context, '/settings');
             }),
           ],
@@ -50,7 +50,7 @@ class UserHomeScreen extends StatelessWidget {
             Container(
               height: 190,
               decoration: BoxDecoration(
-                color: const Color(0xFFF2A2A2),
+                color: DutioPalette.of(context).homeHeroBlush,
                 borderRadius: BorderRadius.circular(26),
               ),
               child: Stack(
@@ -61,19 +61,19 @@ class UserHomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Crew',
                           style: TextStyle(
-                            color: AppTheme.cream,
+                            color: DutioPalette.of(context).background,
                             fontSize: 36,
                             fontWeight: FontWeight.w900,
                             height: .95,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'on Duty',
                           style: TextStyle(
-                            color: AppTheme.darkGreen,
+                            color: DutioPalette.of(context).accent,
                             fontSize: 36,
                             fontWeight: FontWeight.w900,
                             height: 1.05,
@@ -83,7 +83,8 @@ class UserHomeScreen extends StatelessWidget {
                         Text(
                           'Cek detail piket kamu 🌱',
                           style: TextStyle(
-                            color: AppTheme.dark.withValues(alpha: .8),
+                            color: DutioPalette.of(context).textPrimary
+                                .withValues(alpha: .8),
                             fontWeight: FontWeight.w600,
                             fontSize: 11,
                           ),
@@ -98,20 +99,23 @@ class UserHomeScreen extends StatelessWidget {
                       width: 106,
                       height: 130,
                       decoration: BoxDecoration(
-                        color: const Color(0xFFE9DCC0),
+                        color: DutioPalette.of(context).warmSurface,
                         borderRadius: BorderRadius.circular(60),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.cleaning_services_rounded,
-                        color: AppTheme.darkGreen,
+                        color: DutioPalette.of(context).accent,
                         size: 74,
                       ),
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     right: 83,
                     top: 14,
-                    child: Icon(Icons.auto_awesome, color: AppTheme.cream),
+                    child: Icon(
+                      Icons.auto_awesome,
+                      color: DutioPalette.of(context).background,
+                    ),
                   ),
                 ],
               ),
@@ -120,16 +124,16 @@ class UserHomeScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(18),
               decoration: BoxDecoration(
-                color: AppTheme.sage,
+                color: DutioPalette.of(context).sage,
                 borderRadius: BorderRadius.circular(28),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     'Kamar A',
                     style: TextStyle(
-                      color: AppTheme.white,
+                      color: DutioPalette.of(context).onAccent,
                       fontSize: 20,
                       fontWeight: FontWeight.w800,
                     ),
@@ -140,11 +144,16 @@ class UserHomeScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   _roomInfo(
+                    context,
                     Icons.calendar_month_rounded,
                     'Rabu, 3 Desember 2025',
                   ),
                   const SizedBox(height: 8),
-                  _roomInfo(Icons.access_time_rounded, '07.00 – 09.00'),
+                  _roomInfo(
+                    context,
+                    Icons.access_time_rounded,
+                    '07.00 – 09.00',
+                  ),
                 ],
               ),
             ),
@@ -170,37 +179,42 @@ class UserHomeScreen extends StatelessWidget {
     ],
   );
 
-  static Widget _roundIcon(IconData icon, VoidCallback onTap) => InkWell(
+  static Widget _roundIcon(
+    BuildContext context,
+    IconData icon,
+    VoidCallback onTap,
+  ) => InkWell(
     onTap: onTap,
     borderRadius: BorderRadius.circular(25),
     child: CircleAvatar(
       radius: 22,
-      backgroundColor: const Color(0xFFE2DED2),
-      child: Icon(icon, color: AppTheme.ink, size: 25),
+      backgroundColor: DutioPalette.of(context).neutralSurface,
+      child: Icon(icon, color: DutioPalette.of(context).textStrong, size: 25),
     ),
   );
 
-  static Widget _roomInfo(IconData icon, String label) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-    decoration: BoxDecoration(
-      color: AppTheme.white,
-      borderRadius: BorderRadius.circular(18),
-    ),
-    child: Row(
-      children: [
-        Icon(icon, color: AppTheme.ink, size: 22),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            label,
-            style: const TextStyle(color: AppTheme.dark),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
+  static Widget _roomInfo(BuildContext context, IconData icon, String label) =>
+      Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: DutioPalette.of(context).surface,
+          borderRadius: BorderRadius.circular(18),
         ),
-      ],
-    ),
-  );
+        child: Row(
+          children: [
+            Icon(icon, color: DutioPalette.of(context).textStrong, size: 22),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                label,
+                style: TextStyle(color: DutioPalette.of(context).textPrimary),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ],
+        ),
+      );
 
   static Widget _homeAction(
     BuildContext context, {
@@ -210,11 +224,15 @@ class UserHomeScreen extends StatelessWidget {
     required VoidCallback onTap,
   }) => Container(
     decoration: BoxDecoration(
-      color: AppTheme.white,
+      color: DutioPalette.of(context).surface,
       borderRadius: BorderRadius.circular(20),
-      border: Border.all(color: const Color(0xFFE0DCCF)),
-      boxShadow: const [
-        BoxShadow(color: AppTheme.blush, offset: Offset(0, 5), blurRadius: 0),
+      border: Border.all(color: DutioPalette.of(context).border),
+      boxShadow: [
+        BoxShadow(
+          color: DutioPalette.of(context).blush,
+          offset: Offset(0, 5),
+          blurRadius: 0,
+        ),
       ],
     ),
     child: InkWell(
@@ -226,8 +244,8 @@ class UserHomeScreen extends StatelessWidget {
           children: [
             Text(
               title,
-              style: const TextStyle(
-                color: AppTheme.darkGreen,
+              style: TextStyle(
+                color: DutioPalette.of(context).accent,
                 fontSize: 11,
                 fontWeight: FontWeight.w700,
               ),
@@ -235,21 +253,25 @@ class UserHomeScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Row(
               children: [
-                Icon(icon, color: AppTheme.ink, size: 36),
+                Icon(
+                  icon,
+                  color: DutioPalette.of(context).textStrong,
+                  size: 36,
+                ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 13),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF1ECE4),
+                      color: DutioPalette.of(context).softSurface,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Text(
                       label,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontWeight: FontWeight.w800,
-                        color: AppTheme.ink,
+                        color: DutioPalette.of(context).textStrong,
                       ),
                     ),
                   ),

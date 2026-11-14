@@ -11,42 +11,8 @@ class DutioLogo extends StatelessWidget {
   Widget build(BuildContext context) => SizedBox(
     width: size,
     height: size,
-    child: CustomPaint(painter: _DutioLogoPainter()),
+    child: Image.asset('assets/images/logo.png', fit: BoxFit.contain),
   );
-}
-
-class _DutioLogoPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final p = Paint()
-      ..color = AppTheme.darkGreen
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width * .055
-      ..strokeJoin = StrokeJoin.round;
-    final c = Offset(size.width / 2, size.height / 2);
-    final diamond = Path()
-      ..moveTo(c.dx, size.height * .04)
-      ..lineTo(size.width * .96, c.dy)
-      ..lineTo(c.dx, size.height * .96)
-      ..lineTo(size.width * .04, c.dy)
-      ..close();
-    canvas.drawPath(diamond, p);
-    canvas.drawLine(Offset(c.dx, size.height * .04), c, p);
-    canvas.drawLine(Offset(size.width * .96, c.dy), c, p);
-    canvas.drawLine(Offset(c.dx, size.height * .96), c, p);
-    canvas.drawLine(Offset(size.width * .04, c.dy), c, p);
-    canvas.drawRect(
-      Rect.fromCenter(
-        center: c,
-        width: size.width * .3,
-        height: size.height * .3,
-      ),
-      p,
-    );
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
 class DutioHeader extends StatelessWidget {
@@ -70,8 +36,8 @@ class DutioHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) => Container(
     padding: const EdgeInsets.fromLTRB(14, 8, 18, 10),
-    decoration: const BoxDecoration(
-      color: AppTheme.cream,
+    decoration: BoxDecoration(
+      color: DutioPalette.of(context).background,
       boxShadow: [
         BoxShadow(
           color: Color(0x18000000),
@@ -86,7 +52,7 @@ class DutioHeader extends StatelessWidget {
           IconButton(
             onPressed: onBack ?? () => Navigator.maybePop(context),
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-            color: AppTheme.ink,
+            color: DutioPalette.of(context).textStrong,
             visualDensity: VisualDensity.compact,
           ),
         Expanded(
@@ -95,8 +61,8 @@ class DutioHeader extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  color: AppTheme.darkGreen,
+                style: TextStyle(
+                  color: DutioPalette.of(context).accent,
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
                 ),
@@ -104,7 +70,10 @@ class DutioHeader extends StatelessWidget {
               if (subtitle case final text?)
                 Text(
                   text,
-                  style: const TextStyle(color: AppTheme.dark, fontSize: 11),
+                  style: TextStyle(
+                    color: DutioPalette.of(context).textPrimary,
+                    fontSize: 11,
+                  ),
                 ),
             ],
           ),
@@ -147,7 +116,7 @@ class DutioBottomNav extends StatelessWidget {
       margin: const EdgeInsets.fromLTRB(24, 4, 24, 12),
       padding: const EdgeInsets.symmetric(vertical: 9),
       decoration: BoxDecoration(
-        color: const Color(0xFFD8D5C9),
+        color: DutioPalette.of(context).neutralSurface,
         borderRadius: BorderRadius.circular(22),
         boxShadow: const [
           BoxShadow(
@@ -173,13 +142,17 @@ class DutioBottomNav extends StatelessWidget {
                   Icon(
                     item.$1,
                     size: 26,
-                    color: active ? AppTheme.ink : AppTheme.charcoal,
+                    color: active
+                        ? DutioPalette.of(context).textStrong
+                        : DutioPalette.of(context).secondaryText,
                   ),
                   Text(
                     item.$2,
                     style: TextStyle(
                       fontSize: 9,
-                      color: active ? AppTheme.darkGreen : AppTheme.charcoal,
+                      color: active
+                          ? DutioPalette.of(context).accent
+                          : DutioPalette.of(context).secondaryText,
                       fontWeight: active ? FontWeight.w700 : FontWeight.w400,
                     ),
                   ),
@@ -197,19 +170,19 @@ class DutioPanel extends StatelessWidget {
   const DutioPanel({
     super.key,
     required this.child,
-    this.color = AppTheme.white,
+    this.color,
     this.padding = const EdgeInsets.all(16),
     this.radius = 20,
   });
 
   final Widget child;
-  final Color color;
+  final Color? color;
   final EdgeInsetsGeometry padding;
   final double radius;
 
   @override
   Widget build(BuildContext context) => Material(
-    color: color,
+    color: color ?? DutioPalette.of(context).surface,
     elevation: 2,
     borderRadius: BorderRadius.circular(radius),
     clipBehavior: Clip.antiAlias,
@@ -229,8 +202,8 @@ class DutioSectionTitle extends StatelessWidget {
       Expanded(
         child: Text(
           title,
-          style: const TextStyle(
-            color: AppTheme.ink,
+          style: TextStyle(
+            color: DutioPalette.of(context).textStrong,
             fontSize: 18,
             fontWeight: FontWeight.w800,
           ),
@@ -261,8 +234,8 @@ class DutioPrimaryButton extends StatelessWidget {
       icon: Icon(icon ?? Icons.arrow_forward_rounded),
       label: Text(label),
       style: FilledButton.styleFrom(
-        backgroundColor: AppTheme.darkGreen,
-        foregroundColor: AppTheme.white,
+        backgroundColor: DutioPalette.of(context).action,
+        foregroundColor: DutioPalette.of(context).onAccent,
         padding: const EdgeInsets.symmetric(vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         textStyle: const TextStyle(fontWeight: FontWeight.w700),
@@ -291,7 +264,7 @@ class DutioSettingTile extends StatelessWidget {
   Widget build(BuildContext context) => ListTile(
     onTap: onTap,
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-    leading: Icon(icon, color: AppTheme.darkGreen, size: 24),
+    leading: Icon(icon, color: DutioPalette.of(context).accent, size: 24),
     title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
     subtitle: subtitle == null ? null : Text(subtitle!),
     trailing: trailing ?? const Icon(Icons.chevron_right_rounded),
