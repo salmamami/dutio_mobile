@@ -1,17 +1,27 @@
-# dutio_mobile
+# Dutio Mobile
 
-A new Flutter project.
+Aplikasi Flutter untuk mengatur jadwal dan tugas piket asrama bagi anggota dan koordinator.
 
-## Getting Started
+## Menjalankan aplikasi
 
-This project is a starting point for a Flutter application.
+```shell
+flutter pub get
+flutter run
+```
 
-A few resources to get you started if this is your first Flutter project:
+Tes widget dan analisis statis:
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+```shell
+flutter test
+flutter analyze
+```
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Alur UI
+
+- **Anggota:** login, beranda, checklist misi, poin/evaluasi, chat koordinator, pengaturan akun, notifikasi, dan unggah laporan piket.
+- **Koordinator:** login/daftar, dashboard jadwal, chat anggota, Data Center, pengelolaan area dan kamar, evaluasi laporan, dan pengaturan.
+- Halaman khusus yang dibuka dari dashboard memakai named route di `lib/main.dart`. Navigasi tab anggota dan koordinator dipisahkan.
+
+Data akun, jadwal, pesan, evaluasi, dan laporan saat ini hanya contoh untuk UI. Aksi yang memerlukan layanan perangkat atau backend (autentikasi, kamera/galeri sungguhan, panggilan, penyimpanan, dan API) belum dihubungkan. Gambar area kamar mandi yang tersedia untuk prototipe berada di `assets/images/bathroom.png`.
+
+Untuk integrasi Laravel, pindahkan data dummy dari layar ke model/repository, tambahkan konfigurasi base URL dan penanganan respons/error di lapisan data, lalu hubungkan autentikasi dan unggah berkas tanpa mengubah widget layar.

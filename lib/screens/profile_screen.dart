@@ -72,7 +72,7 @@ class ProfileScreen extends StatelessWidget {
                         vertical: 7,
                       ),
                       decoration: BoxDecoration(
-                        color: AppTheme.white.withOpacity(0.2),
+                        color: AppTheme.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: const Text(

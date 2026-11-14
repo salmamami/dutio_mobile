@@ -1,9 +1,32 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
+
 import '../core/app_theme.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  Timer? _timer;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer(const Duration(milliseconds: 1200), () {
+      if (mounted) Navigator.pushReplacementNamed(context, '/login');
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +99,7 @@ class DutioLogoPainter extends CustomPainter {
     canvas.drawPath(inner, paint);
 
     canvas.drawRect(
-      Rect.fromCenter(
-        center: Offset(centerX, centerY),
-        width: 18,
-        height: 18,
-      ),
+      Rect.fromCenter(center: Offset(centerX, centerY), width: 18, height: 18),
       paint,
     );
   }
