@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/app_theme.dart';
 import '../../core/app_theme_controller.dart';
@@ -13,6 +17,121 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   bool notifications = true;
+  bool isLoading = true;
+  bool isLoggingOut = false;
+
+  String nama = '';
+  String kamar = '';
+  String email = '';
+  String role = 'penghuni';
+
+  static const String baseUrl = 'http://127.0.0.1:8000';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchProfile();
+  }
+
+  // Mengambil data profil dari API
+  Future<void> fetchProfile() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+
+      if (token == null || token.isEmpty) {
+        if (!mounted) return;
+        Navigator.pushReplacementNamed(context, '/login');
+        return;
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/api/profile'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        final data = result['data'] ?? result;
+        final user = data['user'] ?? data;
+
+        if (!mounted) return;
+
+        setState(() {
+          nama = user['name']?.toString() ?? '';
+          kamar = user['kamar']?.toString() ?? '';
+          email = user['email']?.toString() ?? '';
+          role = user['role']?.toString() ?? 'penghuni';
+          isLoading = false;
+        });
+      } else if (response.statusCode == 401) {
+        await logout();
+      } else {
+        throw Exception('Gagal mengambil data profil.');
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        isLoading = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Gagal memuat profil. Periksa koneksi backend.'),
+        ),
+      );
+    }
+  }
+
+  // Mengakhiri sesi pengguna
+  Future<void> logout() async {
+    if (isLoggingOut) return;
+
+    setState(() {
+      isLoggingOut = true;
+    });
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+
+      if (token != null && token.isNotEmpty) {
+        await http.post(
+          Uri.parse('$baseUrl/api/logout'),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+        );
+      }
+
+      await prefs.remove('auth_token');
+      await prefs.remove('user_role');
+      await prefs.remove('user_name');
+      await prefs.remove('user_email');
+
+      if (!mounted) return;
+
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    } catch (e) {
+      if (!mounted) return;
+
+      // Sesi lokal tetap diakhiri meskipun backend tidak terjangkau.
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('auth_token');
+      await prefs.remove('user_role');
+      await prefs.remove('user_name');
+      await prefs.remove('user_email');
+
+      if (!mounted) return;
+
+      Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Column(
@@ -25,7 +144,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             height: 220,
             decoration: BoxDecoration(
               color: DutioPalette.of(context).sage,
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(150)),
+              borderRadius: const BorderRadius.vertical(
+                bottom: Radius.circular(150),
+              ),
             ),
           ),
           Positioned(
@@ -70,21 +191,44 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ],
       ),
       const SizedBox(height: 32),
-      Text(
-        'Kamar A',
-        style: TextStyle(
-          color: DutioPalette.of(context).textStrong,
-          fontSize: 22,
-          fontWeight: FontWeight.w800,
+
+      // Informasi penghuni dari API
+      if (isLoading)
+        const CircularProgressIndicator()
+      else ...[
+        Text(
+          kamar.isNotEmpty ? kamar : 'Kamar belum tersedia',
+          style: TextStyle(
+            color: DutioPalette.of(context).textStrong,
+            fontSize: 22,
+            fontWeight: FontWeight.w800,
+          ),
         ),
-      ),
+        const SizedBox(height: 5),
+        Text(
+          nama.isNotEmpty ? nama : 'Nama belum tersedia',
+          style: TextStyle(
+            color: DutioPalette.of(context).secondaryText,
+            fontSize: 14,
+          ),
+        ),
+        const SizedBox(height: 3),
+        Text(
+          email,
+          style: TextStyle(
+            color: DutioPalette.of(context).secondaryText,
+            fontSize: 12,
+          ),
+        ),
+      ],
+
       const SizedBox(height: 18),
       Expanded(
         child: Container(
           padding: const EdgeInsets.fromLTRB(18, 18, 18, 12),
           decoration: BoxDecoration(
             color: DutioPalette.of(context).surface,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(44)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(44)),
           ),
           child: Material(
             color: DutioPalette.of(context).surface,
@@ -111,7 +255,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 SwitchListTile(
                   value: notifications,
-                  onChanged: (value) => setState(() => notifications = value),
+                  onChanged: (value) {
+                    setState(() {
+                      notifications = value;
+                    });
+                  },
                   title: const Text('Notification'),
                   secondary: const Icon(
                     Icons.notifications_active_outlined,
@@ -148,10 +296,15 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 const SizedBox(height: 10),
                 OutlinedButton.icon(
-                  onPressed: () =>
-                      Navigator.pushReplacementNamed(context, '/login'),
-                  icon: const Icon(Icons.logout_rounded),
-                  label: const Text('Logout'),
+                  onPressed: isLoggingOut ? null : logout,
+                  icon: isLoggingOut
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : const Icon(Icons.logout_rounded),
+                  label: Text(isLoggingOut ? 'Logging out...' : 'Logout'),
                   style: OutlinedButton.styleFrom(
                     foregroundColor: DutioPalette.of(context).accent,
                     side: BorderSide(color: DutioPalette.of(context).border),
