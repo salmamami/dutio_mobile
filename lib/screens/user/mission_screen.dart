@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../core/app_theme.dart';
 import '../../widgets/dutio_widgets.dart';
@@ -11,20 +15,167 @@ class UserMissionScreen extends StatefulWidget {
 }
 
 class _UserMissionScreenState extends State<UserMissionScreen> {
-  final List<String> tasks = const [
-    'Menyapu lantai kamar mandi',
-    'Membersihkan wastafel',
-    'Menyikat kloset',
-    'Menguras bak',
-  ];
-  final Set<int> completed = {};
+  static const String baseUrl = 'http://127.0.0.1:8000/api';
+
+  List<Map<String, dynamic>> tasks = [];
+
+  String area = '-';
+  String statusJadwal = '';
+  int total = 0;
+  int selesai = 0;
+  int persen = 0;
+
+  bool isLoading = true;
+  String? errorMessage;
   bool showCompleted = false;
+
+  final Set<int> updatingTasks = {};
+
+  @override
+  void initState() {
+    super.initState();
+    loadChecklist();
+  }
+
+  // Mengambil data checklist dari Laravel API
+  Future<void> loadChecklist() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = null;
+    });
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+
+      if (token == null) {
+        throw Exception('Token login tidak ditemukan. Silakan login kembali.');
+      }
+
+      final response = await http.get(
+        Uri.parse('$baseUrl/checklist'),
+        headers: {
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
+
+      final result = jsonDecode(response.body);
+
+      if (response.statusCode == 200 && result['success'] == true) {
+        final data = result['data'];
+
+        if (!mounted) return;
+
+        setState(() {
+          area = data['area']?.toString() ?? '-';
+          statusJadwal = data['status']?.toString() ?? '';
+
+          tasks = (data['checklists'] as List)
+              .map((item) => Map<String, dynamic>.from(item))
+              .toList();
+
+          total = data['total'] ?? 0;
+          selesai = data['selesai'] ?? 0;
+          persen = data['persen'] ?? 0;
+          isLoading = false;
+        });
+      } else {
+        throw Exception(result['message'] ?? 'Gagal mengambil data checklist.');
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        isLoading = false;
+        errorMessage = e.toString();
+      });
+    }
+  }
+
+  // Mengubah status checklist melalui Laravel API
+  Future<void> toggleChecklist(int id, bool value) async {
+    if (updatingTasks.contains(id)) return;
+
+    final index = tasks.indexWhere((item) => item['id'] == id);
+
+    if (index == -1) return;
+
+    final oldValue = tasks[index]['selesai'] == true;
+
+    setState(() {
+      tasks[index]['selesai'] = value;
+      updatingTasks.add(id);
+
+      selesai = tasks.where((item) => item['selesai'] == true).length;
+      persen = total > 0 ? ((selesai / total) * 100).round() : 0;
+    });
+
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('auth_token');
+
+      if (token == null) {
+        throw Exception('Token login tidak ditemukan.');
+      }
+
+      final response = await http.post(
+        Uri.parse('$baseUrl/checklist/$id/toggle'),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode({'selesai': value}),
+      );
+
+      final result = jsonDecode(response.body);
+
+      if (response.statusCode != 200 || result['success'] != true) {
+        throw Exception(result['message'] ?? 'Checklist gagal diperbarui.');
+      }
+
+      final data = result['data'];
+
+      if (!mounted) return;
+
+      setState(() {
+        selesai = data['selesai_total'] ?? selesai;
+        total = data['total'] ?? total;
+        persen = data['persen'] ?? persen;
+      });
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() {
+        tasks[index]['selesai'] = oldValue;
+
+        selesai = tasks.where((item) => item['selesai'] == true).length;
+        persen = total > 0 ? ((selesai / total) * 100).round() : 0;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Gagal memperbarui checklist: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          updatingTasks.remove(id);
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    final visible = tasks.asMap().entries.where(
-      (entry) => showCompleted ? completed.contains(entry.key) : true,
-    );
+    // Memisahkan checklist yang selesai dan belum selesai
+    final visible = tasks
+        .where(
+          (task) =>
+              showCompleted ? task['selesai'] == true : task['selesai'] != true,
+        )
+        .toList();
+
     return Container(
       color: DutioPalette.of(context).sage,
       child: Column(
@@ -96,13 +247,17 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                         Row(
                           children: [
                             _statCard(
-                              'Kamar A',
-                              '36 orang',
-                              Icons.people_alt_rounded,
+                              area,
+                              'Area Piket',
+                              Icons.cleaning_services_rounded,
                             ),
-                            _statCard('2', 'jam', Icons.timer_rounded),
                             _statCard(
-                              '${completed.length}/${tasks.length}',
+                              '$persen%',
+                              'Progress',
+                              Icons.timer_rounded,
+                            ),
+                            _statCard(
+                              '$selesai/$total',
                               'task completed',
                               Icons.assignment_turned_in_rounded,
                             ),
@@ -113,7 +268,7 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                           'Centang tugas yang sudah selesai untuk memperbarui progres.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: AppTheme.ink,
+                            color: DutioPalette.of(context).textPrimary,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                             height: 1.3,
@@ -133,7 +288,9 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
               padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
               decoration: BoxDecoration(
                 color: DutioPalette.of(context).surfaceVariant,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(30),
+                ),
               ),
               child: Column(
                 children: [
@@ -174,102 +331,118 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                         color: DutioPalette.of(context).background,
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      child: visible.isEmpty
-                          ? Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    showCompleted
-                                        ? Icons.check_circle_outline_rounded
-                                        : Icons.assignment_outlined,
-                                    size: 44,
-                                    color: DutioPalette.of(context).accent,
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    showCompleted
-                                        ? 'Belum ada tugas yang selesai.'
-                                        : 'Belum ada tugas.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: DutioPalette.of(context)
-                                          .textPrimary,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w700,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    showCompleted
-                                        ? 'Yuk, mulai kerjakan piketmu!'
-                                        : 'Tugas piket akan muncul di sini.',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: DutioPalette.of(context)
-                                          .secondaryText,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          : ListView(
-                              key: const ValueKey('mission-task-list'),
-                              children: [
-                                for (final entry in visible)
-                                  Container(
-                                    margin: const EdgeInsets.only(bottom: 12),
-                                    child: Material(
-                                      color: completed.contains(entry.key)
-                                          ? DutioPalette.of(context)
-                                                .surfaceVariant
-                                          : DutioPalette.of(context).surface,
-                                      borderRadius: BorderRadius.circular(20),
-                                      child: CheckboxListTile(
-                                        value: completed.contains(entry.key),
-                                        activeColor: DutioPalette.of(context)
-                                            .accent,
-                                        controlAffinity:
-                                            ListTileControlAffinity.leading,
-                                        contentPadding:
-                                            const EdgeInsets.symmetric(
-                                              horizontal: 8,
-                                            ),
-                                        title: Text(
-                                          entry.value,
-                                          style: TextStyle(
-                                            color: completed.contains(entry.key)
-                                                ? DutioPalette.of(context)
-                                                      .secondaryText
-                                                : DutioPalette.of(context)
-                                                      .textStrong,
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.w700,
-                                            decoration:
-                                                completed.contains(entry.key)
-                                                ? TextDecoration.lineThrough
-                                                : TextDecoration.none,
-                                          ),
-                                        ),
-                                        onChanged: (value) => setState(() {
-                                          if (value == true) {
-                                            completed.add(entry.key);
-                                          } else {
-                                            completed.remove(entry.key);
-                                          }
-                                        }),
-                                      ),
-                                    ),
-                                  ),
-                              ],
-                            ),
+                      child: _buildTaskContent(visible),
                     ),
                   ),
                 ],
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  // Tampilan daftar checklist
+  Widget _buildTaskContent(List<Map<String, dynamic>> visible) {
+    if (isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (errorMessage != null) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 40),
+            const SizedBox(height: 8),
+            Text(errorMessage!, textAlign: TextAlign.center),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: loadChecklist,
+              child: const Text('Coba Lagi'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (tasks.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.event_busy_rounded, size: 40),
+            const SizedBox(height: 8),
+            const Text(
+              'Tidak ada jadwal piket aktif.',
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: loadChecklist,
+              child: const Text('Muat Ulang'),
+            ),
+          ],
+        ),
+      );
+    }
+
+    if (visible.isEmpty) {
+      return Center(
+        child: Text(
+          showCompleted
+              ? 'Belum ada task yang selesai.'
+              : 'Semua task sudah selesai!',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            color: DutioPalette.of(context).secondaryText,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: loadChecklist,
+      child: ListView(
+        children: [
+          for (final task in visible)
+            Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: Material(
+                color: DutioPalette.of(context).surface,
+                borderRadius: BorderRadius.circular(20),
+                child: CheckboxListTile(
+                  value: task['selesai'] == true,
+                  activeColor: DutioPalette.of(context).accent,
+                  controlAffinity: ListTileControlAffinity.leading,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  title: Text(
+                    task['nama']?.toString() ?? '-',
+                    style: TextStyle(
+                      color: DutioPalette.of(context).textStrong,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  secondary: updatingTasks.contains(task['id'])
+                      ? const SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        )
+                      : null,
+                  onChanged: updatingTasks.contains(task['id'])
+                      ? null
+                      : (value) {
+                          if (value != null) {
+                            toggleChecklist(task['id'] as int, value);
+                          }
+                        },
+                ),
+              ),
+            ),
         ],
       ),
     );
@@ -290,9 +463,16 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
           Icon(icon, size: 19, color: DutioPalette.of(context).accent),
           Text(
             title,
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w800),
           ),
-          Text(subtitle, style: const TextStyle(fontSize: 9)),
+          Text(
+            subtitle,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 9),
+          ),
         ],
       ),
     ),

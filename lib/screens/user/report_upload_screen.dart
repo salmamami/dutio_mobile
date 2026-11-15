@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../core/app_theme.dart';
 import '../../widgets/dutio_widgets.dart';
@@ -11,7 +12,36 @@ class ReportUploadScreen extends StatefulWidget {
 }
 
 class _ReportUploadScreenState extends State<ReportUploadScreen> {
+  final ImagePicker _picker = ImagePicker();
+
+  bool _loading = false;
   int? selected;
+
+  Future<void> _pickGalleryImage() async {
+    try {
+      setState(() => _loading = true);
+
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 85,
+      );
+
+      if (!mounted) return;
+
+      setState(() => _loading = false);
+
+      if (image == null) return;
+
+      Navigator.pushNamed(context, '/user/photo-preview', arguments: image);
+    } catch (e) {
+      if (!mounted) return;
+
+      setState(() => _loading = false);
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Gagal memilih foto: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -20,11 +50,13 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
         children: [
           const DutioHeader(title: 'Unggah Foto Laporan Piket', showBack: true),
           const SizedBox(height: 12),
+
+          // Area untuk memilih foto dari galeri
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: InkWell(
               borderRadius: BorderRadius.circular(28),
-              onTap: () => Navigator.pushNamed(context, '/user/camera'),
+              onTap: _loading ? null : _pickGalleryImage,
               child: Container(
                 key: const ValueKey('report-upload-dropzone'),
                 height: 120,
@@ -59,13 +91,27 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: AppTheme.white, fontSize: 11),
                     ),
+                    if (_loading)
+                      const Padding(
+                        padding: EdgeInsets.only(top: 8),
+                        child: SizedBox(
+                          width: 18,
+                          height: 18,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppTheme.white,
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
             ),
           ),
+
+          // Judul foto terbaru
           Padding(
-            padding: EdgeInsets.fromLTRB(20, 20, 20, 10),
+            padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -78,6 +124,8 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
               ),
             ),
           ),
+
+          // Daftar foto terbaru
           Expanded(
             child: GridView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -97,10 +145,13 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                   const Color(0xFFC9D2BC),
                   const Color(0xFF9EAA8D),
                 ];
+
                 return InkWell(
                   key: ValueKey('recent-photo-$index'),
                   borderRadius: BorderRadius.circular(16),
-                  onTap: () => setState(() => selected = index),
+                  onTap: () {
+                    setState(() => selected = index);
+                  },
                   child: Container(
                     key: ValueKey('photo-tile-$index'),
                     decoration: BoxDecoration(
@@ -130,6 +181,7 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                             color: AppTheme.white.withValues(alpha: .8),
                             size: 36,
                           ),
+
                         if (selected == index)
                           Positioned(
                             top: 5,
@@ -152,13 +204,13 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
               },
             ),
           ),
+
+          // Tombol memilih foto dari galeri
           Padding(
             padding: const EdgeInsets.fromLTRB(22, 8, 22, 18),
             child: DutioPrimaryButton(
-              label: 'Unggah Foto',
-              onPressed: selected == null
-                  ? null
-                  : () => Navigator.pushNamed(context, '/user/photo-preview'),
+              label: 'Pilih Foto dari Galeri',
+              onPressed: _loading ? null : _pickGalleryImage,
             ),
           ),
         ],

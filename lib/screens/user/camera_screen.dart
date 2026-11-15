@@ -1,10 +1,49 @@
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../core/app_theme.dart';
 import '../../widgets/dutio_widgets.dart';
 
-class CameraScreen extends StatelessWidget {
+class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
+
+  @override
+  State<CameraScreen> createState() => _CameraScreenState();
+}
+
+class _CameraScreenState extends State<CameraScreen> {
+  final ImagePicker _picker = ImagePicker();
+  bool _loading = false;
+
+  Future<void> _takePicture() async {
+    try {
+      setState(() => _loading = true);
+
+      final XFile? image = await _picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 85,
+      );
+
+      if (!mounted) return;
+      setState(() => _loading = false);
+
+      if (image == null) return;
+
+      Navigator.pushReplacementNamed(
+        context,
+        '/user/photo-preview',
+        arguments: image,
+      );
+    } catch (e) {
+      if (!mounted) return;
+      setState(() => _loading = false);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Kamera tidak dapat dibuka: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -21,12 +60,18 @@ class CameraScreen extends StatelessWidget {
             child: Stack(
               fit: StackFit.expand,
               children: [
-                Image.asset('assets/images/bathroom.jpg', fit: BoxFit.cover),
+                Image.asset(
+                  'assets/images/bathroom.jpg',
+                  fit: BoxFit.cover,
+                ),
                 Center(
                   child: Container(
                     margin: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppTheme.white, width: 2),
+                      border: Border.all(
+                        color: AppTheme.white,
+                        width: 2,
+                      ),
                       borderRadius: BorderRadius.circular(18),
                     ),
                   ),
@@ -45,7 +90,10 @@ class CameraScreen extends StatelessWidget {
                     ),
                     child: const Text(
                       '●  Camera Preview',
-                      style: TextStyle(color: AppTheme.white, fontSize: 11),
+                      style: TextStyle(
+                        color: AppTheme.white,
+                        fontSize: 11,
+                      ),
                     ),
                   ),
                 ),
@@ -59,22 +107,32 @@ class CameraScreen extends StatelessWidget {
             child: Center(
               child: InkWell(
                 customBorder: const CircleBorder(),
-                onTap: () =>
-                    Navigator.pushNamed(context, '/user/photo-preview'),
+                onTap: _loading ? null : _takePicture,
                 child: Container(
                   width: 68,
                   height: 68,
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppTheme.white, width: 4),
-                  ),
-                  child: const DecoratedBox(
-                    decoration: BoxDecoration(
+                    border: Border.all(
                       color: AppTheme.white,
-                      shape: BoxShape.circle,
+                      width: 4,
                     ),
                   ),
+                  child: _loading
+                      ? const Padding(
+                          padding: EdgeInsets.all(12),
+                          child: CircularProgressIndicator(
+                            color: AppTheme.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: AppTheme.white,
+                            shape: BoxShape.circle,
+                          ),
+                        ),
                 ),
               ),
             ),
