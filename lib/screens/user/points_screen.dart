@@ -16,101 +16,159 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
   @override
   Widget build(BuildContext context) => Column(
     children: [
-      Padding(
-        padding: const EdgeInsets.fromLTRB(20, 12, 20, 14),
-        child: Row(
-          children: [
-            const Expanded(
-              child: Text.rich(
-                TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Crew\n',
-                      style: TextStyle(color: AppTheme.white),
-                    ),
-                    TextSpan(
-                      text: 'Points',
-                      style: TextStyle(color: Color(0xFFFFD18B)),
-                    ),
-                  ],
-                ),
-                style: TextStyle(
-                  fontWeight: FontWeight.w900,
-                  fontSize: 26,
-                  height: .95,
-                ),
-              ),
-            ),
-            const DutioLogo(size: 36),
-          ],
-        ),
-      ),
       Expanded(
         child: Stack(
           children: [
-            Container(
-              color: DutioPalette.of(context).sage,
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(28, 12, 150, 0),
-                  child: Text(
-                    'Setiap aktivitas piket yang valid akan tercatat sebagai poin di sini.',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: AppTheme.white.withValues(alpha: .92),
-                      fontSize: 12,
-                      height: 1.4,
+            Container(color: DutioPalette.of(context).sage),
+            Positioned(
+              top: 12,
+              left: 20,
+              right: 20,
+              height: 180,
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Crew Points',
+                          style: TextStyle(
+                            color: DutioPalette.of(context).onAccent,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: 'Informasi poin',
+                        onPressed: () => showDialog<void>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Tentang poin'),
+                            content: const Text(
+                              'Aktivitas piket yang valid akan tercatat sebagai poin.',
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Mengerti'),
+                              ),
+                            ],
+                          ),
+                        ),
+                        icon: Icon(
+                          Icons.info_outline_rounded,
+                          color: DutioPalette.of(context).onAccent,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 18,
+                        vertical: 12,
+                      ),
+                      decoration: BoxDecoration(
+                        color: DutioPalette.of(context).surface,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: .10),
+                            blurRadius: 8,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '8',
+                                  style: TextStyle(
+                                    color: DutioPalette.of(context).textPrimary,
+                                    fontSize: 40,
+                                    height: 1,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'Total Poin',
+                                  style: TextStyle(
+                                    color: DutioPalette.of(context)
+                                        .secondaryText,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            flex: 3,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 10,
+                              ),
+                              decoration: BoxDecoration(
+                                color: DutioPalette.of(context).surfaceVariant,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.verified_rounded,
+                                    color: DutioPalette.of(context).accent,
+                                    size: 24,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'Piket terakhir',
+                                          style: TextStyle(
+                                            color: DutioPalette.of(context)
+                                                .textPrimary,
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        Text(
+                                          'Dinilai baik',
+                                          style: TextStyle(
+                                            color: DutioPalette.of(context)
+                                                .secondaryText,
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            Positioned(
-              right: 20,
-              top: 14,
-              child: Container(
-                width: 126,
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: DutioPalette.of(context).surface,
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: const [
-                    BoxShadow(color: Color(0xFFFFD18B), offset: Offset(0, 7)),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      '8',
-                      style: TextStyle(
-                        color: DutioPalette.of(context).secondaryText,
-                        fontSize: 44,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: DutioPalette.of(context).background,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Text(
-                        'Total Poin',
-                        style: TextStyle(fontWeight: FontWeight.w800),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            Positioned(
-              left: 28,
-              top: 72,
-              child: Icon(
-                Icons.assignment_turned_in_rounded,
-                size: 96,
-                color: const Color(0xFFFFD18B),
+                ],
               ),
             ),
             Positioned.fill(
@@ -147,7 +205,7 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: ListView(
-                          children: evaluations
+                          children: !evaluations
                               ? [
                                   _pointRow(
                                     '+8',
@@ -166,11 +224,68 @@ class _UserPointsScreenState extends State<UserPointsScreen> {
                                   ),
                                 ]
                               : [
-                                  DutioPanel(
-                                    color: DutioPalette.of(context).surface,
-                                    child: const Text(
-                                      'Piket terakhir • Kamar mandi kompleks\nDinilai baik oleh koordinator',
-                                      style: TextStyle(height: 1.5),
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 12),
+                                    child: DutioPanel(
+                                      color: DutioPalette.of(context).surface,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  'Piket terakhir • Kamar mandi kompleks',
+                                                  style: TextStyle(
+                                                    color: DutioPalette.of(
+                                                      context,
+                                                    ).textPrimary,
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Text(
+                                                  'Dinilai baik oleh koordinator',
+                                                  style: TextStyle(
+                                                    color: DutioPalette.of(
+                                                      context,
+                                                    ).secondaryText,
+                                                    height: 1.4,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                      vertical: 24,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Icon(
+                                          Icons.history_toggle_off_rounded,
+                                          size: 38,
+                                          color: DutioPalette.of(context)
+                                              .secondaryText,
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          'Evaluasi piket berikutnya akan muncul setelah penilaian selanjutnya.',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: DutioPalette.of(context)
+                                                .secondaryText,
+                                            fontSize: 12,
+                                            height: 1.4,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],

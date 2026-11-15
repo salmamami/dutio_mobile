@@ -26,7 +26,12 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
               borderRadius: BorderRadius.circular(28),
               onTap: () => Navigator.pushNamed(context, '/user/camera'),
               child: Container(
-                height: 145,
+                key: const ValueKey('report-upload-dropzone'),
+                height: 120,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 18,
+                  vertical: 12,
+                ),
                 decoration: BoxDecoration(
                   color: DutioPalette.of(context).sage,
                   borderRadius: BorderRadius.circular(28),
@@ -37,21 +42,22 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                     Icon(
                       Icons.add_photo_alternate_outlined,
                       color: DutioPalette.of(context).background,
-                      size: 40,
+                      size: 32,
                     ),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     Text(
                       'Unggah Foto',
                       style: TextStyle(
-                        color: AppTheme.white,
-                        fontSize: 18,
+                        color: DutioPalette.of(context).onAccent,
+                        fontSize: 16,
                         fontWeight: FontWeight.w800,
                       ),
                     ),
-                    SizedBox(height: 4),
+                    const SizedBox(height: 2),
                     Text(
                       'Silakan pilih gambar dari galeri Anda',
-                      style: TextStyle(color: AppTheme.white, fontSize: 12),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: AppTheme.white, fontSize: 11),
                     ),
                   ],
                 ),
@@ -63,7 +69,7 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                'Your Recent Files',
+                'Foto Terbaru Anda',
                 style: TextStyle(
                   color: DutioPalette.of(context).secondaryText,
                   fontSize: 16,
@@ -92,17 +98,19 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                   const Color(0xFF9EAA8D),
                 ];
                 return InkWell(
+                  key: ValueKey('recent-photo-$index'),
                   borderRadius: BorderRadius.circular(16),
                   onTap: () => setState(() => selected = index),
                   child: Container(
+                    key: ValueKey('photo-tile-$index'),
                     decoration: BoxDecoration(
                       color: colors[index],
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
                         color: selected == index
-                            ? DutioPalette.of(context).accent
+                            ? DutioPalette.of(context).action
                             : Colors.transparent,
-                        width: 3,
+                        width: 4,
                       ),
                     ),
                     clipBehavior: Clip.antiAlias,
@@ -127,12 +135,13 @@ class _ReportUploadScreenState extends State<ReportUploadScreen> {
                             top: 5,
                             right: 5,
                             child: CircleAvatar(
-                              radius: 12,
+                              key: const ValueKey('selected-photo-indicator'),
+                              radius: 14,
                               backgroundColor: DutioPalette.of(context).action,
                               child: Icon(
-                                Icons.check,
+                                Icons.check_rounded,
                                 color: AppTheme.white,
-                                size: 15,
+                                size: 18,
                               ),
                             ),
                           ),

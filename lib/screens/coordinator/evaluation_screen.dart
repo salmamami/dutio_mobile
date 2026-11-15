@@ -26,9 +26,12 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
           DutioHeader(
             title: 'Evaluasi',
             showBack: true,
+            backColor: DutioPalette.of(context).accent,
+            logoSize: 28,
             trailing: Icon(
               Icons.notifications_none_rounded,
               color: DutioPalette.of(context).accent,
+              size: 24,
             ),
           ),
           if (selectedTab == 0) _performance(),
@@ -87,13 +90,14 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                         onTap: () => setState(() => selectedTab = index),
                         borderRadius: BorderRadius.circular(20),
                         child: Container(
+                          key: ValueKey('evaluation-tab-$index'),
                           width: 110,
                           alignment: Alignment.center,
                           padding: const EdgeInsets.symmetric(horizontal: 8),
                           decoration: BoxDecoration(
                             color: selectedTab == index
-                                ? DutioPalette.of(context).mutedSurface
-                                : DutioPalette.of(context).inactiveSurface,
+                                ? DutioPalette.of(context).action
+                                : DutioPalette.of(context).surface,
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Text(
@@ -101,8 +105,8 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: selectedTab == index
-                                  ? DutioPalette.of(context).onMutedSurface
-                                  : DutioPalette.of(context).secondaryText,
+                                  ? DutioPalette.of(context).onAccent
+                                  : DutioPalette.of(context).textPrimary,
                               fontSize: 11,
                             ),
                           ),
@@ -113,8 +117,9 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                   const SizedBox(height: 8),
                   Expanded(
                     child: Container(
+                      key: const ValueKey('evaluation-list'),
                       decoration: BoxDecoration(
-                        color: DutioPalette.of(context).mutedSurface,
+                        color: DutioPalette.of(context).surfaceVariant,
                         borderRadius: BorderRadius.circular(22),
                       ),
                       child: ListView(
@@ -159,9 +164,9 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
         const SizedBox(height: 12),
         Row(
           children: [
-            _scoreCircle('7', '20', 'Laporan Masuk'),
+            _scoreCircle(7, 20, 'Laporan Masuk'),
             const SizedBox(width: 18),
-            _scoreCircle('20', '70', 'Mission Selesai'),
+            _scoreCircle(20, 70, 'Mission Selesai'),
           ],
         ),
         const SizedBox(height: 12),
@@ -202,76 +207,116 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(14),
       child: Container(
+        key: ValueKey('evaluation-category-$label'),
         padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 12),
         decoration: BoxDecoration(
-          color: DutioPalette.of(context).surfaceVariant,
+          color: active
+              ? DutioPalette.of(context).action
+              : DutioPalette.of(context).surface,
           borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: active
-                ? DutioPalette.of(context).accent
-                : Colors.transparent,
-            width: 2,
+                ? DutioPalette.of(context).action
+                : DutioPalette.of(context).border,
+            width: 1.5,
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 20, color: DutioPalette.of(context).accent),
+            Icon(
+              icon,
+              size: 20,
+              color: active
+                  ? DutioPalette.of(context).onAccent
+                  : DutioPalette.of(context).accent,
+            ),
             const SizedBox(width: 6),
-            Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
+            Text(
+              label,
+              style: TextStyle(
+                color: active
+                    ? DutioPalette.of(context).onAccent
+                    : DutioPalette.of(context).textPrimary,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
           ],
         ),
       ),
     ),
   );
 
-  Widget _scoreCircle(String value, String total, String label) => Expanded(
-    child: Container(
-      height: 132,
-      decoration: BoxDecoration(
-        color: DutioPalette.of(context).background,
-        shape: BoxShape.circle,
-        border: Border.all(color: DutioPalette.of(context).surface, width: 7),
-        boxShadow: const [BoxShadow(color: Color(0x22000000), blurRadius: 4)],
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text.rich(
-            TextSpan(
-              children: [
-                TextSpan(
-                  text: '$value/',
-                  style: const TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.w900,
-                  ),
-                ),
-                TextSpan(
-                  text: total,
-                  style: TextStyle(
-                    color: DutioPalette.of(context).secondaryText,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
+  Widget _scoreCircle(int value, int total, String label) => Expanded(
+    child: Center(
+      child: SizedBox(
+        width: 132,
+        height: 132,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            CircularProgressIndicator(
+              value: value / total,
+              backgroundColor: DutioPalette.of(context).surfaceVariant,
+              valueColor: AlwaysStoppedAnimation(
+                DutioPalette.of(context).action,
+              ),
+              strokeWidth: 7,
+              strokeCap: StrokeCap.round,
             ),
-          ),
-          Container(
-            width: 100,
-            height: 1,
-            color: DutioPalette.of(context).sage,
-          ),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: DutioPalette.of(context).onAccent,
-              fontWeight: FontWeight.w800,
+            Container(
+              width: 112,
+              height: 112,
+              decoration: BoxDecoration(
+                color: DutioPalette.of(context).background,
+                shape: BoxShape.circle,
+                boxShadow: const [
+                  BoxShadow(color: Color(0x22000000), blurRadius: 4),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '$value/',
+                          style: const TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '$total',
+                          style: TextStyle(
+                            color: DutioPalette.of(context).secondaryText,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    width: 90,
+                    height: 1,
+                    color: DutioPalette.of(context).sage,
+                  ),
+                  Text(
+                    label,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: DutioPalette.of(context).textPrimary,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     ),
   );
@@ -324,12 +369,27 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                     style: const TextStyle(fontSize: 12),
                   ),
                   const SizedBox(height: 6),
-                  Text(
-                    done ? 'Sudah dievaluasi' : 'Ketuk untuk melihat laporan',
-                    style: TextStyle(
-                      color: DutioPalette.of(context).secondaryText,
-                      fontSize: 10,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          done
+                              ? 'Sudah dievaluasi'
+                              : 'Ketuk untuk melihat laporan',
+                          style: TextStyle(
+                            color: DutioPalette.of(context).secondaryText,
+                            fontSize: 12,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Icon(
+                        Icons.chevron_right_rounded,
+                        color: DutioPalette.of(context).accent,
+                        size: 20,
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -347,8 +407,9 @@ class _EvaluationScreenState extends State<EvaluationScreen> {
                 style: TextStyle(
                   color: done
                       ? DutioPalette.of(context).onAccent
-                      : DutioPalette.of(context).onBlush,
+                      : AppTheme.ink,
                   fontSize: 11,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),

@@ -22,7 +22,9 @@ class DutioHeader extends StatelessWidget {
     this.subtitle,
     this.showBack = false,
     this.onBack,
+    this.backColor,
     this.showLogo = true,
+    this.logoSize = 32,
     this.trailing,
   });
 
@@ -30,7 +32,9 @@ class DutioHeader extends StatelessWidget {
   final String? subtitle;
   final bool showBack;
   final VoidCallback? onBack;
+  final Color? backColor;
   final bool showLogo;
+  final double logoSize;
   final Widget? trailing;
 
   @override
@@ -52,7 +56,7 @@ class DutioHeader extends StatelessWidget {
           IconButton(
             onPressed: onBack ?? () => Navigator.maybePop(context),
             icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-            color: DutioPalette.of(context).textStrong,
+            color: backColor ?? DutioPalette.of(context).textStrong,
             visualDensity: VisualDensity.compact,
           ),
         Expanded(
@@ -80,7 +84,7 @@ class DutioHeader extends StatelessWidget {
         ),
         ?trailing,
         if (showLogo) const SizedBox(width: 8),
-        if (showLogo) const DutioLogo(size: 32),
+        if (showLogo) DutioLogo(size: logoSize),
       ],
     ),
   );

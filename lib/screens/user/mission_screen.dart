@@ -23,9 +23,7 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
   @override
   Widget build(BuildContext context) {
     final visible = tasks.asMap().entries.where(
-      (entry) => showCompleted
-          ? completed.contains(entry.key)
-          : !completed.contains(entry.key),
+      (entry) => showCompleted ? completed.contains(entry.key) : true,
     );
     return Container(
       color: DutioPalette.of(context).sage,
@@ -52,11 +50,14 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                         top: 24,
                         child: DutioMissionLogo(),
                       ),
-                      const Center(
-                        child: Icon(
-                          Icons.person_rounded,
-                          size: 96,
-                          color: Color(0xFFCE6D5E),
+                      Center(
+                        child: Text(
+                          'Mission Cleanliness',
+                          style: TextStyle(
+                            color: DutioPalette.of(context).textPrimary,
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                          ),
                         ),
                       ),
                       Positioned(
@@ -108,10 +109,15 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                           ],
                         ),
                         const SizedBox(height: 8),
-                        const Text(
-                          'Checklist setiap task setelah kamu menyelesaikannya untuk mengupdate progress!',
+                        Text(
+                          'Centang tugas yang sudah selesai untuk memperbarui progres.',
                           textAlign: TextAlign.center,
-                          style: TextStyle(color: AppTheme.white, fontSize: 10),
+                          style: TextStyle(
+                            color: AppTheme.ink,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            height: 1.3,
+                          ),
                         ),
                       ],
                     ),
@@ -122,10 +128,11 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
           ),
           Expanded(
             child: Container(
+              key: const ValueKey('mission-lower-panel'),
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
               decoration: BoxDecoration(
-                color: DutioPalette.of(context).mutedSurface,
+                color: DutioPalette.of(context).surfaceVariant,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
               ),
               child: Column(
@@ -133,9 +140,9 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      '🧼 Mission Cleanliness',
+                      'Daftar Tugas',
                       style: TextStyle(
-                        color: DutioPalette.of(context).onAccent,
+                        color: DutioPalette.of(context).textPrimary,
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
                       ),
@@ -160,49 +167,103 @@ class _UserMissionScreenState extends State<UserMissionScreen> {
                   const SizedBox(height: 8),
                   Expanded(
                     child: Container(
+                      key: const ValueKey('mission-task-panel'),
                       width: double.infinity,
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: DutioPalette.of(context).graySurface,
+                        color: DutioPalette.of(context).background,
                         borderRadius: BorderRadius.circular(22),
                       ),
-                      child: ListView(
-                        children: [
-                          for (final entry in visible)
-                            Container(
-                              margin: const EdgeInsets.only(bottom: 12),
-                              child: Material(
-                                color: DutioPalette.of(context).surface,
-                                borderRadius: BorderRadius.circular(20),
-                                child: CheckboxListTile(
-                                  value: completed.contains(entry.key),
-                                  activeColor: DutioPalette.of(context).accent,
-                                  controlAffinity:
-                                      ListTileControlAffinity.leading,
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 8,
+                      child: visible.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    showCompleted
+                                        ? Icons.check_circle_outline_rounded
+                                        : Icons.assignment_outlined,
+                                    size: 44,
+                                    color: DutioPalette.of(context).accent,
                                   ),
-                                  title: Text(
-                                    entry.value,
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    showCompleted
+                                        ? 'Belum ada tugas yang selesai.'
+                                        : 'Belum ada tugas.',
+                                    textAlign: TextAlign.center,
                                     style: TextStyle(
                                       color: DutioPalette.of(context)
-                                          .textStrong,
-                                      fontSize: 13,
+                                          .textPrimary,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w700,
                                     ),
                                   ),
-                                  onChanged: (value) => setState(() {
-                                    if (value == true) {
-                                      completed.add(entry.key);
-                                    } else {
-                                      completed.remove(entry.key);
-                                    }
-                                  }),
-                                ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    showCompleted
+                                        ? 'Yuk, mulai kerjakan piketmu!'
+                                        : 'Tugas piket akan muncul di sini.',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: DutioPalette.of(context)
+                                          .secondaryText,
+                                      fontSize: 13,
+                                    ),
+                                  ),
+                                ],
                               ),
+                            )
+                          : ListView(
+                              key: const ValueKey('mission-task-list'),
+                              children: [
+                                for (final entry in visible)
+                                  Container(
+                                    margin: const EdgeInsets.only(bottom: 12),
+                                    child: Material(
+                                      color: completed.contains(entry.key)
+                                          ? DutioPalette.of(context)
+                                                .surfaceVariant
+                                          : DutioPalette.of(context).surface,
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: CheckboxListTile(
+                                        value: completed.contains(entry.key),
+                                        activeColor: DutioPalette.of(context)
+                                            .accent,
+                                        controlAffinity:
+                                            ListTileControlAffinity.leading,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                            ),
+                                        title: Text(
+                                          entry.value,
+                                          style: TextStyle(
+                                            color: completed.contains(entry.key)
+                                                ? DutioPalette.of(context)
+                                                      .secondaryText
+                                                : DutioPalette.of(context)
+                                                      .textStrong,
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w700,
+                                            decoration:
+                                                completed.contains(entry.key)
+                                                ? TextDecoration.lineThrough
+                                                : TextDecoration.none,
+                                          ),
+                                        ),
+                                        onChanged: (value) => setState(() {
+                                          if (value == true) {
+                                            completed.add(entry.key);
+                                          } else {
+                                            completed.remove(entry.key);
+                                          }
+                                        }),
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
-                        ],
-                      ),
                     ),
                   ),
                 ],

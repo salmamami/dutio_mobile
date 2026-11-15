@@ -135,8 +135,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 FilledButton(
                   onPressed: signIn,
                   style: FilledButton.styleFrom(
-                    backgroundColor: DutioPalette.of(context).strongAction,
-                    foregroundColor: AppTheme.white,
+                    backgroundColor: DutioPalette.of(context).action,
+                    foregroundColor: DutioPalette.of(context).onAccent,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: const StadiumBorder(),
                   ),
@@ -170,13 +170,26 @@ class _LoginScreenState extends State<LoginScreen> {
   }) => TextField(
     controller: controller,
     obscureText: obscureText,
-    style: const TextStyle(color: AppTheme.white),
+    style: TextStyle(color: DutioPalette.of(context).textPrimary),
     decoration: InputDecoration(
       hintText: hint,
-      hintStyle: TextStyle(color: AppTheme.white.withValues(alpha: .75)),
+      hintStyle: TextStyle(
+        color: DutioPalette.of(context).textPrimary.withValues(alpha: .7),
+      ),
       suffixIcon: suffix,
-      fillColor: DutioPalette.of(context).mutedSurface.withValues(alpha: .65),
+      fillColor: DutioPalette.of(context).surface,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(color: DutioPalette.of(context).border),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(14),
+        borderSide: BorderSide(
+          color: DutioPalette.of(context).accent,
+          width: 1.5,
+        ),
+      ),
     ),
   );
 }

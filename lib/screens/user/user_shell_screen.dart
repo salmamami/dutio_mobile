@@ -16,6 +16,7 @@ class UserShellScreen extends StatefulWidget {
 
 class _UserShellScreenState extends State<UserShellScreen> {
   int index = 0;
+  bool hasUnreadNotifications = true;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -24,7 +25,14 @@ class _UserShellScreenState extends State<UserShellScreen> {
       child: IndexedStack(
         index: index,
         children: [
-          UserHomeScreen(onMission: () => setState(() => index = 4)),
+          UserHomeScreen(
+            onMission: () => setState(() => index = 4),
+            hasUnreadNotifications: hasUnreadNotifications,
+            onNotifications: () {
+              setState(() => hasUnreadNotifications = false);
+              Navigator.pushNamed(context, '/notifications');
+            },
+          ),
           const UserChatScreen(),
           const UserPointsScreen(),
           const UserProfileScreen(),
@@ -33,9 +41,12 @@ class _UserShellScreenState extends State<UserShellScreen> {
       ),
     ),
     bottomNavigationBar: SafeArea(
-      child: DutioBottomNav(
-        selectedIndex: index > 3 ? 0 : index,
-        onSelected: (value) => setState(() => index = value),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: DutioBottomNav(
+          selectedIndex: index > 3 ? 0 : index,
+          onSelected: (value) => setState(() => index = value),
+        ),
       ),
     ),
   );

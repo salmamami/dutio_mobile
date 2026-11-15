@@ -4,9 +4,16 @@ import '../../core/app_theme.dart';
 import '../../widgets/dutio_widgets.dart';
 
 class UserHomeScreen extends StatelessWidget {
-  const UserHomeScreen({super.key, required this.onMission});
+  const UserHomeScreen({
+    super.key,
+    required this.onMission,
+    required this.hasUnreadNotifications,
+    required this.onNotifications,
+  });
 
   final VoidCallback onMission;
+  final bool hasUnreadNotifications;
+  final VoidCallback onNotifications;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -33,9 +40,12 @@ class UserHomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-            _roundIcon(context, Icons.notifications_none_rounded, () {
-              Navigator.pushNamed(context, '/notifications');
-            }),
+            _roundIcon(
+              context,
+              Icons.notifications_none_rounded,
+              onNotifications,
+              showBadge: hasUnreadNotifications,
+            ),
             const SizedBox(width: 10),
             _roundIcon(context, Icons.person_outline_rounded, () {
               Navigator.pushNamed(context, '/settings');
@@ -45,7 +55,7 @@ class UserHomeScreen extends StatelessWidget {
       ),
       Expanded(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(18, 8, 18, 22),
+          padding: const EdgeInsets.fromLTRB(18, 8, 18, 36),
           children: [
             Container(
               height: 190,
@@ -57,6 +67,7 @@ class UserHomeScreen extends StatelessWidget {
                 children: [
                   Positioned(
                     left: 18,
+                    right: 126,
                     top: 20,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,35 +97,22 @@ class UserHomeScreen extends StatelessWidget {
                             color: DutioPalette.of(context).textPrimary
                                 .withValues(alpha: .8),
                             fontWeight: FontWeight.w600,
-                            fontSize: 11,
+                            fontSize: 13,
                           ),
                         ),
                       ],
                     ),
                   ),
                   Positioned(
-                    right: 12,
-                    bottom: 8,
-                    child: Container(
-                      width: 106,
-                      height: 130,
-                      decoration: BoxDecoration(
-                        color: DutioPalette.of(context).warmSurface,
-                        borderRadius: BorderRadius.circular(60),
-                      ),
-                      child: Icon(
-                        Icons.cleaning_services_rounded,
-                        color: DutioPalette.of(context).accent,
-                        size: 74,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 83,
-                    top: 14,
-                    child: Icon(
-                      Icons.auto_awesome,
-                      color: DutioPalette.of(context).background,
+                    right: 4,
+                    bottom: 0,
+                    width: 130,
+                    height: 155,
+                    child: Image.asset(
+                      'assets/images/mbak.png',
+                      key: const ValueKey('crew-duty-image'),
+                      fit: BoxFit.contain,
+                      alignment: Alignment.bottomCenter,
                     ),
                   ),
                 ],
@@ -138,9 +136,13 @@ class UserHomeScreen extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const Text(
+                  Text(
                     'Kamar Mandi Kompleks Lantai 1',
-                    style: TextStyle(color: AppTheme.white, fontSize: 12),
+                    style: TextStyle(
+                      color: DutioPalette.of(context).textStrong,
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(height: 12),
                   _roomInfo(
@@ -182,14 +184,42 @@ class UserHomeScreen extends StatelessWidget {
   static Widget _roundIcon(
     BuildContext context,
     IconData icon,
-    VoidCallback onTap,
-  ) => InkWell(
+    VoidCallback onTap, {
+    bool showBadge = false,
+  }) => InkWell(
     onTap: onTap,
     borderRadius: BorderRadius.circular(25),
-    child: CircleAvatar(
-      radius: 22,
-      backgroundColor: DutioPalette.of(context).neutralSurface,
-      child: Icon(icon, color: DutioPalette.of(context).textStrong, size: 25),
+    child: Stack(
+      clipBehavior: Clip.none,
+      children: [
+        CircleAvatar(
+          radius: 22,
+          backgroundColor: DutioPalette.of(context).neutralSurface,
+          child: Icon(
+            icon,
+            color: DutioPalette.of(context).textStrong,
+            size: 25,
+          ),
+        ),
+        if (showBadge)
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Container(
+              key: const ValueKey('unread-notification-badge'),
+              width: 10,
+              height: 10,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.error,
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: DutioPalette.of(context).neutralSurface,
+                  width: 1.5,
+                ),
+              ),
+            ),
+          ),
+      ],
     ),
   );
 
