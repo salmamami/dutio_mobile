@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1066144626462",
+    "project_id": "dutio-c16a3",
+    "storage_bucket": "dutio-c16a3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1066144626462:android:551a42c95856c48142fb0f",
+        "android_client_info": {
+          "package_name": "com.example.dutio_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7GNlFUSu9WNXUYl29wtD8Q2sZO_IvzYo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

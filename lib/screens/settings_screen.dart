@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
 import '../core/app_theme.dart';
 import '../core/app_theme_controller.dart';
 import '../widgets/dutio_widgets.dart';
+import '../services/fcm_service.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key, required this.role});
@@ -14,12 +15,76 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool notifications = true;
+  bool notifications = false;
+
+  Future<void> _toggleNotifications(bool value) async {
+    print('DEBUG: SWITCH NOTIFICATION DITEKAN');
+    
+    if (!value) {
+      setState(() {
+        notifications = false;
+      });
+      return;
+    }
+
+    try {
+      print('DEBUG: Mulai meminta izin notifikasi');
+
+      final token =
+          await FcmService.requestPermissionAndGetToken();
+
+      print('DEBUG: Proses Firebase selesai');
+      print('DEBUG: Hasil FID = $token');
+
+      if (!mounted) return;
+
+      if (token == null) {
+        setState(() {
+          notifications = false;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Izin notifikasi belum diberikan.'),
+          ),
+        );
+
+        return;
+      }
+
+      setState(() {
+        notifications = true;
+      });
+
+      print('Firebase Installation ID: $token');
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Notifikasi berhasil diaktifkan!'),
+        ),
+      );
+    } catch (e) {
+      print('DEBUG: Firebase error = $e');
+
+      if (!mounted) return;
+
+      setState(() {
+        notifications = false;
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Gagal mengaktifkan notifikasi: $e'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final isMember = widget.role == DutioRole.member;
     final person = isMember ? 'Kamar A' : 'Koordinator';
+
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -32,7 +97,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   height: 224,
                   decoration: BoxDecoration(
                     color: DutioPalette.of(context).sage,
-                    borderRadius: BorderRadius.vertical(
+                    borderRadius: const BorderRadius.vertical(
                       bottom: Radius.circular(150),
                     ),
                   ),
@@ -82,18 +147,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ],
             ),
+
             const SizedBox(height: 32),
+
             Text(
               person,
-              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.w800),
+              style: const TextStyle(
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+              ),
             ),
+
             const SizedBox(height: 18),
+
             Expanded(
               child: Container(
                 padding: const EdgeInsets.fromLTRB(18, 18, 18, 10),
                 decoration: BoxDecoration(
                   color: DutioPalette.of(context).surface,
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(42)),
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(42),
+                  ),
                 ),
                 child: Material(
                   color: DutioPalette.of(context).surface,
@@ -112,48 +186,63 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                       ),
+
+                      // Dark Mode
                       AnimatedBuilder(
                         animation: AppThemeController.instance,
                         builder: (context, _) => SwitchListTile(
                           value: AppThemeController.instance.isDarkMode,
-                          onChanged: AppThemeController.instance.setDarkMode,
+                          onChanged:
+                              AppThemeController.instance.setDarkMode,
                           title: const Text('Dark Mode'),
                           secondary: const Icon(
                             Icons.sunny,
                             color: Colors.amber,
                           ),
-                          activeThumbColor: DutioPalette.of(context).accent,
+                          activeThumbColor:
+                              DutioPalette.of(context).accent,
                         ),
                       ),
+
+                      // Notification
                       SwitchListTile(
                         value: notifications,
-                        onChanged: (value) =>
-                            setState(() => notifications = value),
+                        onChanged: _toggleNotifications,
                         title: const Text('Notification'),
-                        secondary: const Icon(
-                          Icons.notifications_none_rounded,
-                          color: Color(0xFFC49A48),
+                        subtitle: const Text(
+                          'Aktifkan pengingat dan pemberitahuan DUTIO',
                         ),
-                        activeThumbColor: DutioPalette.of(context).accent,
+                        secondary: Icon(
+                          Icons.notifications_outlined,
+                          color: DutioPalette.of(context).accent,
+                        ),
+                        activeThumbColor:
+                            DutioPalette.of(context).accent,
                       ),
+
+                      // Password
                       _routeTile(
                         context,
                         Icons.shield_outlined,
                         'Password',
                         '/password',
                       ),
+
+                      // Account
                       _routeTile(
                         context,
                         Icons.account_circle_outlined,
                         'Account',
                         '/account',
                       ),
+
+                      // About
                       ListTile(
                         leading: Icon(
                           Icons.info_outline,
                           color: DutioPalette.of(context).accent,
                         ),
-                        title: Text('About'),
+                        title: const Text('About'),
                         trailing: Text(
                           'DUTIO 1.0.0',
                           style: TextStyle(
@@ -161,18 +250,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           ),
                         ),
                       ),
+
                       const SizedBox(height: 8),
+
+                      // Logout
                       OutlinedButton.icon(
-                        onPressed: () =>
-                            Navigator.pushReplacementNamed(context, '/login'),
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/login',
+                          );
+                        },
                         icon: const Icon(Icons.logout_rounded),
                         label: const Text('Logout'),
                         style: OutlinedButton.styleFrom(
-                          foregroundColor: DutioPalette.of(context).accent,
+                          foregroundColor:
+                              DutioPalette.of(context).accent,
                           side: BorderSide(
                             color: DutioPalette.of(context).border,
                           ),
-                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                          ),
                         ),
                       ),
                     ],
@@ -191,13 +290,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
     IconData icon,
     String title,
     String route,
-  ) => ListTile(
-    leading: Icon(icon, color: DutioPalette.of(context).accent),
-    title: Text(title),
-    trailing: Icon(
-      Icons.chevron_right_rounded,
-      color: DutioPalette.of(context).secondaryText,
-    ),
-    onTap: () => Navigator.pushNamed(context, route, arguments: widget.role),
-  );
+  ) {
+    return ListTile(
+      leading: Icon(
+        icon,
+        color: DutioPalette.of(context).accent,
+      ),
+      title: Text(title),
+      trailing: Icon(
+        Icons.chevron_right_rounded,
+        color: DutioPalette.of(context).secondaryText,
+      ),
+      onTap: () {
+        Navigator.pushNamed(
+          context,
+          route,
+          arguments: widget.role,
+        );
+      },
+    );
+  }
 }

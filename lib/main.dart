@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'core/app_theme.dart';
 import 'core/app_theme_controller.dart';
 import 'screens/account_screen.dart';
@@ -24,7 +26,13 @@ import 'screens/user/upload_success_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   await AppThemeController.instance.load();
+
   runApp(const DutioApp());
 }
 
