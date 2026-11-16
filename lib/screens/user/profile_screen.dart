@@ -25,7 +25,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   String email = '';
   String role = 'penghuni';
 
-  static const String baseUrl = 'http://127.0.0.1:8000';
+  static const String baseUrl = 'http://172.16.18.115:8000';
 
   @override
   void initState() {
