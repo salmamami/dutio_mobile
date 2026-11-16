@@ -17,7 +17,7 @@ class PasswordScreen extends StatefulWidget {
 }
 
 class _PasswordScreenState extends State<PasswordScreen> {
-  final String baseUrl = 'http://172.16.18.115:8000';
+  final String baseUrl = 'http://192.168.2.184:8000';
 
   final TextEditingController currentPassword = TextEditingController();
   final TextEditingController newPassword = TextEditingController();

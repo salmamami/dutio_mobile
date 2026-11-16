@@ -15,7 +15,7 @@ class UserMissionScreen extends StatefulWidget {
 }
 
 class _UserMissionScreenState extends State<UserMissionScreen> {
-  static const String baseUrl = 'http://172.16.18.115:8000/api';
+  static const String baseUrl = 'http://192.168.2.184:8000/api';
 
   List<Map<String, dynamic>> tasks = [];
 

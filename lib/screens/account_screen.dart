@@ -17,7 +17,7 @@ class AccountScreen extends StatefulWidget {
 }
 
 class _AccountScreenState extends State<AccountScreen> {
-  final String baseUrl = 'http://172.16.18.115:8000';
+  final String baseUrl = 'http://192.168.2.184:8000';
 
   bool editing = false;
   bool loading = true;
