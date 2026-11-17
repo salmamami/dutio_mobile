@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import '../core/app_theme.dart';
 import '../core/app_theme_controller.dart';
 import '../widgets/dutio_widgets.dart';
@@ -17,9 +19,8 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   bool notifications = false;
 
+  // Mengaktifkan atau menonaktifkan notifikasi DUTIO
   Future<void> _toggleNotifications(bool value) async {
-    print('DEBUG: SWITCH NOTIFICATION DITEKAN');
-    
     if (!value) {
       setState(() {
         notifications = false;
@@ -28,17 +29,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
 
     try {
-      print('DEBUG: Mulai meminta izin notifikasi');
-
-      final token =
-          await FcmService.requestPermissionAndGetToken();
-
-      print('DEBUG: Proses Firebase selesai');
-      print('DEBUG: Hasil FID = $token');
+      // 1. Meminta izin dan mengambil FID Firebase
+      final fid = await FcmService.requestPermissionAndGetToken();
 
       if (!mounted) return;
 
-      if (token == null) {
+      if (fid == null) {
         setState(() {
           notifications = false;
         });
@@ -48,24 +44,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
             content: Text('Izin notifikasi belum diberikan.'),
           ),
         );
-
         return;
       }
 
+      // 2. Mengambil token autentikasi Sanctum
+      final prefs = await SharedPreferences.getInstance();
+      final authToken = prefs.getString('auth_token');
+
+      if (authToken == null || authToken.isEmpty) {
+        throw Exception(
+          'Token login tidak ditemukan. Silakan login kembali.',
+        );
+      }
+
+      // 3. Mendaftarkan perangkat ke Laravel
+      final success = await FcmService.registerDeviceToBackend(
+        fid: fid,
+        authToken: authToken,
+      );
+
+      if (!mounted) return;
+
+      if (!success) {
+        throw Exception('Laravel gagal mendaftarkan perangkat.');
+      }
+
+      // 4. Mengaktifkan status notifikasi
       setState(() {
         notifications = true;
       });
 
-      print('Firebase Installation ID: $token');
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Notifikasi berhasil diaktifkan!'),
+          content: Text('Notifikasi DUTIO berhasil diaktifkan!'),
         ),
       );
     } catch (e) {
-      print('DEBUG: Firebase error = $e');
-
       if (!mounted) return;
 
       setState(() {
@@ -285,6 +299,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  // Navigasi ke halaman pengaturan lainnya
   Widget _routeTile(
     BuildContext context,
     IconData icon,
